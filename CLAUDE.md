@@ -45,7 +45,7 @@ OUT: leagues, transfers execution, history/charts, multi-user, FPL auth, config 
 
 ## Visual spec
 
-Black background; white/grey text; teal `#00D4AA` accents + active-pane border; red `#FF4444` hard fixtures; yellow `#FFD700` neutral; green `#00FF88` easy. Three panes side by side (~30/35/35), footer keybind bar.
+Black background; white/grey text; burnt amber `#B45309` accents + active-pane border; red `#FF4444` hard fixtures; yellow `#FFD700` neutral; green `#00FF88` easy. Three panes side by side (~30/35/35), footer keybind bar.
 
 ## Verdict prompt (ai/prompt.go)
 

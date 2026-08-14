@@ -28,3 +28,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 
 }
+
+func (m Model) View() string {
+	return "Welcome to Ferguson. Press q to quit"
+}
