@@ -1,12 +1,17 @@
 package main
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
+
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 type Model struct {
 	Width      int
 	Height     int
 	ActivePane int
 	WillQuit   bool
+	Squad      []fpl.Player
 }
 
 func (m Model) Init() tea.Cmd {
