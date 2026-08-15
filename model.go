@@ -31,7 +31,8 @@ func FetchPlayersCmd() tea.Cmd {
 		if err != nil {
 			return TeamSheet{Err: err}
 		}
-		return TeamSheet{Players: SheetData}
+		result := TeamSheet{Players: SheetData}
+		return result
 	}
 }
 
