@@ -1,6 +1,8 @@
 package main
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"github.com/charmbracelet/lipgloss"
+)
 
 const (
 	colorAccent  = lipgloss.Color("#B45309")
@@ -22,7 +24,7 @@ var (
 			BorderForeground(colorBorder)
 
 	activePaneStyle = paneStyle.
-				BorderForeground(colorAccent)
+			BorderForeground(colorAccent)
 
 	titleStyle = baseStyle.
 			Bold(true).
