@@ -20,7 +20,7 @@ var (
 			Padding(0, 1)
 
 	paneStyle = baseStyle.
-			Border(lipgloss.RoundedBorder()).
+			Border(lipgloss.ThickBorder()).
 			BorderForeground(colorBorder)
 
 	activePaneStyle = paneStyle.
