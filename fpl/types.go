@@ -9,3 +9,12 @@ type Player struct {
 
 	GameweekPoints int `json:"event_points"`
 }
+
+type Fixture struct {
+	Event              int  `json:"event"`
+	TeamHome           int  `json:"team_h"`
+	TeamAway           int  `json:"team_a"`
+	TeamHomeDifficulty int  `json:"team_h_difficulty"`
+	TeamAwayDifficulty int  `json:"team_a_difficulty"`
+	Finished           bool `json:"finished"`
+}
