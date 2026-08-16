@@ -2,6 +2,7 @@ package ui
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 )
@@ -23,4 +24,17 @@ func CleanData(squad []fpl.Player) [][]string {
 	}
 	return output
 
+}
+
+func FormatData(squad [][]string) string {
+	output := ""
+	i := 0
+	for i < len(squad) {
+		placeHolder := squad[i]
+		formatted := strings.Join(placeHolder, " ")
+		output = output + formatted
+		output = output + "\n"
+		i = i + 1
+	}
+	return output
 }
