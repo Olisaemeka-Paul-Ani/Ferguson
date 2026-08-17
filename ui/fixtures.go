@@ -34,3 +34,26 @@ func FirstFive(games []fpl.Fixture) []fpl.Fixture {
 	}
 	return output
 }
+
+func FixturesForClub(team int, games []fpl.Fixture) []fpl.Fixture {
+	var output []fpl.Fixture
+	i := 0
+	for i < len(games) {
+		if games[i].TeamHome == team || games[i].TeamAway == team {
+			output = append(output, games[i])
+		}
+		i = i + 1
+	}
+	return output
+}
+
+func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
+	output := map[int][]fpl.Fixture{}
+	fixtures := FindUpcomingMatches(games)
+	i := 1
+	for i <= 20 {
+		output[i] = FirstFive(FixturesForClub(i, fixtures))
+		i = i + 1
+	}
+	return output
+}
