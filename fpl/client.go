@@ -31,3 +31,25 @@ func FetchAllPlayers() ([]Player, error) {
 
 	return PlayerList.Group, nil
 }
+
+func FetchAllFixtures() ([]Fixture, error) {
+	resp, err := http.Get("https://fantasy.premierleague.com/api/fixtures/")
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var FixtureList []Fixture
+	err = json.Unmarshal(body, &FixtureList)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return FixtureList, nil
+
+}
