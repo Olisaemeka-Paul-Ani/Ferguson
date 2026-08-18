@@ -5,14 +5,24 @@ import (
 )
 
 const (
-	colorAccent  = lipgloss.Color("#B45309")
-	colorText    = lipgloss.Color("#D0D0D0")
-	colorBorder  = lipgloss.Color("#444444")
-	colorFooter  = lipgloss.Color("#666666")
-	colorHard    = lipgloss.Color("#FF4444")
-	colorNeutral = lipgloss.Color("#FFD700")
-	colorEasy    = lipgloss.Color("#00FF88")
+	colorAccent   = lipgloss.Color("#B45309")
+	colorText     = lipgloss.Color("#D0D0D0")
+	colorBorder   = lipgloss.Color("#444444")
+	colorFooter   = lipgloss.Color("#666666")
+	colorVeryHard = lipgloss.Color("#8B0000")
+	colorHard     = lipgloss.Color("#FF4444")
+	colorNeutral  = lipgloss.Color("#FFD700")
+	colorEasy     = lipgloss.Color("#00FF88")
+	colorVeryEasy = lipgloss.Color("#3399FF")
 )
+
+var fdrColorMap = map[int]string{
+	1: fdrVeryEasyStyle.Render("■■■■■"),
+	2: fdrEasyStyle.Render("■■■■■"),
+	3: fdrNeutralStyle.Render("■■■■■"),
+	4: fdrHardStyle.Render("■■■■■"),
+	5: fdrVeryHardStyle.Render("■■■■■"),
+}
 
 var (
 	baseStyle = lipgloss.NewStyle().
@@ -33,7 +43,9 @@ var (
 	footerStyle = baseStyle.
 			Foreground(colorFooter)
 
-	fdrHardStyle    = baseStyle.Foreground(colorHard)
-	fdrNeutralStyle = baseStyle.Foreground(colorNeutral)
-	fdrEasyStyle    = baseStyle.Foreground(colorEasy)
+	fdrVeryHardStyle = baseStyle.Foreground(colorVeryHard)
+	fdrHardStyle     = baseStyle.Foreground(colorHard)
+	fdrNeutralStyle  = baseStyle.Foreground(colorNeutral)
+	fdrEasyStyle     = baseStyle.Foreground(colorEasy)
+	fdrVeryEasyStyle = baseStyle.Foreground(colorVeryEasy)
 )

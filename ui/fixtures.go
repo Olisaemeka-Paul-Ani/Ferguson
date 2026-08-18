@@ -60,7 +60,7 @@ func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
 	return output
 }
 
-func FormatFixtures(clubs map[int][]fpl.Fixture) string {
+func FormatFixtures(clubs map[int][]fpl.Fixture, blocks map[int]string) string {
 	output := ""
 
 	for k, v := range clubs {
@@ -71,9 +71,9 @@ func FormatFixtures(clubs map[int][]fpl.Fixture) string {
 		i := 0
 		for i < len(v) {
 			if v[i].TeamHome == k {
-				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamAway) + " (H) " + "-" + "Difficulty " + strconv.Itoa(v[i].TeamHomeDifficulty) + "\n"
+				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamAway) + " (H) " + "-" + "Difficulty " + blocks[v[i].TeamHomeDifficulty] + "\n"
 			} else {
-				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamHome) + " (A) " + "-" + "Difficulty " + strconv.Itoa(v[i].TeamAwayDifficulty) + "\n"
+				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamHome) + " (A) " + "-" + "Difficulty " + blocks[v[i].TeamAwayDifficulty] + "\n"
 			}
 			i = i + 1
 		}

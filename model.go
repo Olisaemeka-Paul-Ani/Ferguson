@@ -77,7 +77,7 @@ func (m Model) View() string {
 	CleanedData := ui.CleanData(m.Squad)
 	FormattedData := ui.FormatData(CleanedData)
 	GroupFirstFive := ui.GroupFirstFive(m.Fixtures)
-	FormatFixtures := ui.FormatFixtures(GroupFirstFive)
+	FormatFixtures := ui.FormatFixtures(GroupFirstFive, fdrColorMap)
 
 	squadPane := activePaneStyle.Render(FormattedData)
 	fixturesPane := paneStyle.Render(FormatFixtures)
