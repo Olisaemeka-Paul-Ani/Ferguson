@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"strconv"
+
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 )
 
@@ -56,4 +58,29 @@ func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
 		i = i + 1
 	}
 	return output
+}
+
+func FormatFixtures(clubs map[int][]fpl.Fixture) string {
+	output := ""
+
+	for k, v := range clubs {
+		var placeHolder string
+		placeHolder += "Club " + strconv.Itoa(k)
+		placeHolder += "\n"
+
+		i := 0
+		for i < len(v) {
+			if v[i].TeamHome == k {
+				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamAway) + " (H) " + "-" + "Difficulty " + strconv.Itoa(v[i].TeamHomeDifficulty) + "\n"
+			} else {
+				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamHome) + " (A) " + "-" + "Difficulty " + strconv.Itoa(v[i].TeamAwayDifficulty) + "\n"
+			}
+			i = i + 1
+		}
+		output = output + placeHolder
+
+	}
+
+	return output
+
 }
