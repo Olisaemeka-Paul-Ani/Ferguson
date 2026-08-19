@@ -74,13 +74,37 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	CleanedData := ui.CleanData(m.Squad)
-	FormattedData := ui.FormatData(CleanedData)
-	GroupFirstFive := ui.GroupFirstFive(m.Fixtures)
-	FormatFixtures := ui.FormatFixtures(GroupFirstFive, fdrColorMap)
+	var CleanedData [][]string
+	var FormattedData string
+	gotSquad := len(m.Squad) > 0
+	gotFixtures := len(m.Fixtures) > 0
+	var GroupFirstFive map[int][]fpl.Fixture
+	var FormatFixtures string
+	var squadPane string
+	var fixturesPane string
 
-	squadPane := activePaneStyle.Render(FormattedData)
-	fixturesPane := paneStyle.Render(FormatFixtures)
-	combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane)
-	return combined
+	if !gotSquad {
+		return paneStyle.Render("Loading squad...")
+	} else if gotSquad {
+		CleanedData = ui.CleanData(m.Squad)
+		FormattedData = ui.FormatData(CleanedData)
+		squadPane = activePaneStyle.Render(FormattedData)
+
+	}
+
+	if !gotFixtures {
+		return paneStyle.Render("Loading fixtures...")
+	} else if gotFixtures {
+		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
+		FormatFixtures = ui.FormatFixtures(GroupFirstFive, fdrColorMap)
+		fixturesPane = paneStyle.Render(FormatFixtures)
+
+	}
+	if gotFixtures && gotSquad {
+		combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane)
+		return combined
+	}
+
+	return ""
+
 }
