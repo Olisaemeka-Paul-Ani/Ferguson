@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// Marshalling response to send to Gemini API
 type Text struct {
 	Text string `json:"text"`
 }
@@ -18,6 +19,23 @@ type Part struct {
 
 type Outgoing struct {
 	Content []Part `json:"contents"`
+}
+
+// Unmarshalling response from Gemini API
+type Response struct {
+	ResponseText string `json:"text"`
+}
+
+type PartsStruct struct {
+	PartText []Response `json:"parts"`
+}
+
+type ContentStruct struct {
+	Content PartsStruct `json:"content"`
+}
+
+type Candidates struct {
+	Candidate []ContentStruct `json:"candidates"`
 }
 
 func AggregatePrompt(str string) ([]byte, error) {
