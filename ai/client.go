@@ -3,6 +3,7 @@ package ai
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"os"
@@ -69,4 +70,29 @@ func SendPrompt(byt []byte) ([]byte, error) {
 	}
 
 	return body, nil
+}
+
+func UnmarshallResponseBody(byt []byte) (Candidates, error) {
+	var ResponseStruct Candidates
+	err := json.Unmarshal(byt, &ResponseStruct)
+	if err != nil {
+		return ResponseStruct, err
+	}
+
+	return ResponseStruct, nil
+}
+
+func ExtractunMarshalledResponse(response Candidates) (string, error) {
+	var err error
+	if len(response.Candidate) == 0 {
+		err = errors.New("No content inside response")
+		return "", err
+	}
+
+	if len(response.Candidate[0].Content.PartText) == 0 {
+		err = errors.New("No content inside response")
+		return "", err
+	}
+
+	return response.Candidate[0].Content.PartText[0].ResponseText, err
 }
