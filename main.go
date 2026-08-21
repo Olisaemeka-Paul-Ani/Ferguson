@@ -13,9 +13,11 @@ func main() {
 	fmt.Println(*nFlag)
 	m := Model{}
 	p := tea.NewProgram(m)
+
 	_, err := p.Run()
 
 	if err != nil {
 		fmt.Println("error:", err)
 	}
+
 }

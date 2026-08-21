@@ -86,6 +86,7 @@ func (m Model) View() string {
 	if !gotSquad {
 		return paneStyle.Render("Loading squad...")
 	} else if gotSquad {
+
 		CleanedData = ui.CleanData(m.Squad)
 		FormattedData = ui.FormatData(CleanedData)
 		squadPane = activePaneStyle.Render(FormattedData)
