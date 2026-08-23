@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+// Gemini API STRUCTS BEGINNING
 // Marshalling response to send to Gemini API
 type Text struct {
 	Text string `json:"text"`
@@ -38,6 +39,21 @@ type ContentStruct struct {
 type Candidates struct {
 	Candidate []ContentStruct `json:"candidates"`
 }
+
+// GEMINI API STRUCTS ENDING
+
+// GROQ API STRUCTS BEGINNING
+type Body struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type GroqRequest struct {
+	Model    string `json:"model"`
+	Messages []Body `json:"messages"`
+}
+
+// GROQ API STRUCTS ENDING
 
 func AggregatePrompt(str string) ([]byte, error) {
 	var prompt = Text{"Say Hello in one word, in any niche language of your choice."}
