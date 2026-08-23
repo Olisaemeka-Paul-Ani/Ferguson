@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-// Gemini API STRUCTS BEGINNING
+// GEMINI API STRUCTS, REQUEST, RESPONSE WORK (BEGINNING)
 // Marshalling response to send to Gemini API
 type Text struct {
 	Text string `json:"text"`
@@ -39,21 +39,6 @@ type ContentStruct struct {
 type Candidates struct {
 	Candidate []ContentStruct `json:"candidates"`
 }
-
-// GEMINI API STRUCTS ENDING
-
-// GROQ API STRUCTS BEGINNING
-type Body struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
-}
-
-type GroqRequest struct {
-	Model    string `json:"model"`
-	Messages []Body `json:"messages"`
-}
-
-// GROQ API STRUCTS ENDING
 
 func AggregatePrompt(str string) ([]byte, error) {
 	var prompt = Text{"Say Hello in one word, in any niche language of your choice."}
@@ -112,3 +97,32 @@ func ExtractunMarshalledResponse(response Candidates) (string, error) {
 
 	return response.Candidate[0].Content.PartText[0].ResponseText, err
 }
+
+// GEMINI API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
+
+// GROQ API STRUCTS, REQUEST, RESPONSE WORK (BEGINNING)
+// Marshalling request to send to Groq API
+type Body struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type GroqRequest struct {
+	Model    string `json:"model"`
+	Messages []Body `json:"messages"`
+}
+
+func AggregateGroqRequest(str string) ([]byte, error) {
+	var prompt = Body{"user", "Say hello, in one word, in a really niche language"}
+	var messagesSlice []Body
+	messagesSlice = append(messagesSlice, prompt)
+	var request = GroqRequest{"qwen/qwen3.6-27b", messagesSlice}
+	jsonBytes, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonBytes, nil
+}
+
+// GROQ API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
