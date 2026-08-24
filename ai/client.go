@@ -125,4 +125,27 @@ func AggregateGroqRequest(str string) ([]byte, error) {
 	return jsonBytes, nil
 }
 
+func sendGroqRequest(byt []byte) ([]byte, error) {
+	req, err := http.NewRequest("POST", "https://api.groq.com/openai/v1/chat/completions", bytes.NewBuffer(byt))
+
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("FERGUSON_GROQ_KEY"))
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	return body, nil
+}
+
 // GROQ API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
