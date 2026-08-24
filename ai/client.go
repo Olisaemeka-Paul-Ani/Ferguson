@@ -112,6 +112,20 @@ type GroqRequest struct {
 	Messages []Body `json:"messages"`
 }
 
+type GroqResponseMessage struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type GroqResponseChoicesContent struct {
+	Index   int                 `json:"index"`
+	Message GroqResponseMessage `json:"message"`
+}
+
+type GroqResponseContent struct {
+	Choices []GroqResponseChoicesContent `json:"choices"`
+}
+
 func AggregateGroqRequest(str string) ([]byte, error) {
 	var prompt = Body{"user", "Say hello, in one word, in a really niche language"}
 	var messagesSlice []Body
