@@ -127,7 +127,7 @@ type GroqResponseContent struct {
 }
 
 func AggregateGroqRequest(str string) ([]byte, error) {
-	var prompt = Body{"user", "Say hello, in one word, in a really niche language"}
+	var prompt = Body{"user", "Say hello, in one word, in a really niche language. MAKE SURE IT IS ONE WORD. DO NOT RETURN THINKING PROCESS"}
 	var messagesSlice []Body
 	messagesSlice = append(messagesSlice, prompt)
 	var request = GroqRequest{"qwen/qwen3.6-27b", messagesSlice}
@@ -139,7 +139,7 @@ func AggregateGroqRequest(str string) ([]byte, error) {
 	return jsonBytes, nil
 }
 
-func sendGroqRequest(byt []byte) ([]byte, error) {
+func SendGroqRequest(byt []byte) ([]byte, error) {
 	req, err := http.NewRequest("POST", "https://api.groq.com/openai/v1/chat/completions", bytes.NewBuffer(byt))
 
 	if err != nil {
@@ -162,7 +162,7 @@ func sendGroqRequest(byt []byte) ([]byte, error) {
 	return body, nil
 }
 
-func unMarshallGroqResponse(byt []byte) (GroqResponseContent, error) {
+func UnMarshallGroqResponse(byt []byte) (GroqResponseContent, error) {
 	var response GroqResponseContent
 	err := json.Unmarshal(byt, &response)
 	if err != nil {
@@ -171,6 +171,16 @@ func unMarshallGroqResponse(byt []byte) (GroqResponseContent, error) {
 
 	return response, nil
 
+}
+
+func ExtractUnmarshalledGrokResponse(res GroqResponseContent) (string, error) {
+	var err error
+	if len(res.Choices) == 0 {
+		err = errors.New("No content inside response")
+		return "", err
+	}
+
+	return res.Choices[0].Message.Content, err
 }
 
 // GROQ API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
