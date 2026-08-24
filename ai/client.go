@@ -162,4 +162,15 @@ func sendGroqRequest(byt []byte) ([]byte, error) {
 	return body, nil
 }
 
+func unMarshallGroqResponse(byt []byte) (GroqResponseContent, error) {
+	var response GroqResponseContent
+	err := json.Unmarshal(byt, &response)
+	if err != nil {
+		return response, err
+	}
+
+	return response, nil
+
+}
+
 // GROQ API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
