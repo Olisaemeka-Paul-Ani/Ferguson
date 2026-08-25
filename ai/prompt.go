@@ -19,3 +19,25 @@ func BundlePlayerData(strInput string) (string, error) {
 	return strInput, nil
 
 }
+
+func BundleFixtureData(strInput string) (string, error) {
+	resp, err := fpl.FetchAllFixtures()
+	if err != nil {
+		return "", err
+	}
+
+	var outputHash map[int][]fpl.Fixture
+	var difficulty = map[int]string{
+		1: "Very Easy",
+		2: "Easy",
+		3: "Neutral: Not easy, Not too hard",
+		4: "Hard",
+		5: "Very Hard",
+	}
+
+	outputHash = ui.GroupFirstFive(resp)
+	output := ui.FormatFixtures(outputHash, difficulty)
+	strInput = strInput + output
+	return strInput, nil
+
+}
