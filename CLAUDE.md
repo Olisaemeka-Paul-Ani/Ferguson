@@ -6,7 +6,7 @@ AI-powered Fantasy Premier League (FPL) terminal dashboard in Go. Bloomberg Term
 
 - Language: Go 1.22+. Stack: Bubbletea (TUI), Lip Gloss (styling), Bubbles (components), stdlib `net/http` + `encoding/json` only. No other dependencies without asking.
 - Real FPL data only. **No mocking in production paths.**
-- AI provider: Google Gemini (`gemini-2.5-flash`) primary, Groq (`llama-3.1-8b`) fallback. API key from env var `FERGUSON_AI_KEY`. Never hardcode keys.
+- AI provider: Groq (`qwen/qwen3.6-27b`) primary, Google Gemini (`gemini-3.6-flash`) fallback. API keys from env vars `FERGUSON_GROQ_KEY` and `FERGUSON_AI_KEY` respectively. Never hardcode keys.
 - `team_id` passed as CLI flag: `ferguson --team 1234567`. No config file in V1.
 - All Lip Gloss styles live in `styles.go`. No inline styling anywhere.
 - Follow Bubbletea Model-Update-View strictly. View is a pure function of Model. All side effects (HTTP) go through `tea.Cmd`.
