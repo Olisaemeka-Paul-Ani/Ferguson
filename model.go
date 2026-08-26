@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Olisaemeka-Paul-Ani/ferguson/ai"
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ui"
 	tea "github.com/charmbracelet/bubbletea"
@@ -8,12 +9,13 @@ import (
 )
 
 type Model struct {
-	Width      int
-	Height     int
-	ActivePane int
-	WillQuit   bool
-	Squad      []fpl.Player
-	Fixtures   []fpl.Fixture
+	Width       int
+	Height      int
+	ActivePane  int
+	WillQuit    bool
+	VerdictText string
+	Squad       []fpl.Player
+	Fixtures    []fpl.Fixture
 }
 
 func (m Model) Init() tea.Cmd {
@@ -29,6 +31,11 @@ type TeamSheet struct {
 type FixtureSheet struct {
 	Fixtures []fpl.Fixture
 	Err      error
+}
+
+type VerdictSheet struct {
+	Verdict string
+	Err     error
 }
 
 func FetchFixturesCmd() tea.Cmd {
@@ -49,6 +56,17 @@ func FetchPlayersCmd() tea.Cmd {
 			return TeamSheet{Err: err}
 		}
 		result := TeamSheet{Players: SheetData}
+		return result
+	}
+}
+
+func FetchVerdictCmd() tea.Cmd {
+	return func() tea.Msg {
+		SheetData, err := ai.FallBackFunction()
+		if err != nil {
+			return VerdictSheet{Err: err}
+		}
+		result := VerdictSheet{Verdict: SheetData}
 		return result
 	}
 }
