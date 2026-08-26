@@ -127,7 +127,7 @@ type GroqResponseContent struct {
 }
 
 func AggregateGroqRequest(str string) ([]byte, error) {
-	var prompt = Body{"user", "Say hello, in one word, in a really niche language. MAKE SURE IT IS ONE WORD. DO NOT RETURN THINKING PROCESS"}
+	var prompt = Body{"user", str}
 	var messagesSlice []Body
 	messagesSlice = append(messagesSlice, prompt)
 	var request = GroqRequest{"qwen/qwen3.6-27b", messagesSlice}
@@ -184,3 +184,42 @@ func ExtractUnmarshalledGrokResponse(res GroqResponseContent) (string, error) {
 }
 
 // GROQ API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
+
+// LOGIC FOR WIRING PROMPT FROM PROMPT.GO INTO BOTH LLMS  (BEGINNING)
+func GetGrokReply() (string, error) {
+
+	PromptStr, err := ConvertBundledData()
+	if err != nil {
+		return "", err
+	}
+
+	var byt []byte
+
+	byt, err = AggregateGroqRequest(PromptStr)
+
+	if err != nil {
+		return "", err
+	}
+
+	byt, err = SendGroqRequest(byt)
+
+	if err != nil {
+		return "", err
+	}
+	var GroqResStruct GroqResponseContent
+	GroqResStruct, err = UnMarshallGroqResponse(byt)
+	if err != nil {
+		return "", err
+	}
+
+	var GroqResString string
+	GroqResString, err = ExtractUnmarshalledGrokResponse(GroqResStruct)
+
+	if err != nil {
+		return "", err
+	}
+
+	return GroqResString, nil
+}
+
+//LOGIC FOR WIRING PROMPT FROM PROMPT.GO INTO BOTH LLMS  (BEGINNING)
