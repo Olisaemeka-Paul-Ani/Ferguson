@@ -19,7 +19,7 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
-	return tea.Batch(FetchPlayersCmd(), FetchFixturesCmd())
+	return tea.Batch(FetchPlayersCmd(), FetchFixturesCmd(), FetchVerdictCmd())
 
 }
 
@@ -85,6 +85,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case FixtureSheet:
 		m.Fixtures = msg.Fixtures
+
+	case VerdictSheet:
+		m.VerdictText = msg.Verdict
 	}
 
 	return m, nil
