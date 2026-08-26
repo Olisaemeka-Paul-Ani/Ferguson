@@ -41,7 +41,7 @@ type Candidates struct {
 }
 
 func AggregatePrompt(str string) ([]byte, error) {
-	var prompt = Text{"Say Hello in one word, in any niche language of your choice."}
+	var prompt = Text{str}
 	var TextArray []Text
 	TextArray = append(TextArray, prompt)
 	var PartStruct = Part{TextArray}
@@ -220,6 +220,45 @@ func GetGrokReply() (string, error) {
 	}
 
 	return GroqResString, nil
+}
+
+func GetGeminiReply() (string, error) {
+	PromptStr, err := ConvertBundledData()
+	if err != nil {
+		return "", err
+	}
+
+	var byt []byte
+
+	byt, err = AggregatePrompt(PromptStr)
+	if err != nil {
+		return "", err
+	}
+
+	byt, err = SendPrompt(byt)
+
+	if err != nil {
+		return "", err
+	}
+
+	var GeminiRespStruct Candidates
+
+	GeminiRespStruct, err = UnmarshallResponseBody(byt)
+
+	if err != nil {
+		return "", err
+	}
+
+	var output string
+
+	output, err = ExtractunMarshalledResponse(GeminiRespStruct)
+
+	if err != nil {
+		return "", err
+	}
+
+	return output, nil
+
 }
 
 //LOGIC FOR WIRING PROMPT FROM PROMPT.GO INTO BOTH LLMS  (BEGINNING)
