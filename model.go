@@ -1,21 +1,28 @@
 package main
 
 import (
+	"time"
+
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ai"
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
+
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ui"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
 type Model struct {
-	Width       int
-	Height      int
-	ActivePane  int
-	WillQuit    bool
-	VerdictText string
-	Squad       []fpl.Player
-	Fixtures    []fpl.Fixture
+	Width         int
+	Height        int
+	ActivePane    int
+	WillQuit      bool
+	VerdictText   string
+	Squad         []fpl.Player
+	Fixtures      []fpl.Fixture
+	RevealedChars int
+	SquadErr      error
+	FixtureErr    error
+	VerdictErr    error
 }
 
 func (m Model) Init() tea.Cmd {
@@ -71,7 +78,16 @@ func FetchVerdictCmd() tea.Cmd {
 	}
 }
 
+type tickMsg time.Time
+
+func tickCmd() tea.Cmd {
+	return tea.Tick(time.Millisecond*25, func(t time.Time) tea.Msg {
+		return tickMsg(t)
+	})
+}
+
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -81,13 +97,36 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		}
 	case TeamSheet:
+		if msg.Err != nil {
+			m.SquadErr = msg.Err
+		}
 		m.Squad = msg.Players
 
 	case FixtureSheet:
+		if msg.Err != nil {
+			m.FixtureErr = msg.Err
+		}
 		m.Fixtures = msg.Fixtures
 
 	case VerdictSheet:
+		if msg.Err != nil {
+			m.VerdictErr = msg.Err
+		}
 		m.VerdictText = msg.Verdict
+		return m, tickCmd()
+
+	case tickMsg:
+		var remaining int
+		remaining = len(m.VerdictText) - m.RevealedChars
+		if remaining < 3 {
+			m.RevealedChars = m.RevealedChars + remaining
+		} else {
+			m.RevealedChars = m.RevealedChars + 3
+		}
+
+		if m.RevealedChars < len(m.VerdictText) {
+			return m, tickCmd()
+		}
 	}
 
 	return m, nil
@@ -99,12 +138,17 @@ func (m Model) View() string {
 	var FormattedData string
 	gotSquad := len(m.Squad) > 0
 	gotFixtures := len(m.Fixtures) > 0
+	gotVerdict := len(m.VerdictText) > 0
 	var GroupFirstFive map[int][]fpl.Fixture
 	var FormatFixtures string
 	var squadPane string
 	var fixturesPane string
+	var VerdictView string
 
 	if !gotSquad {
+		if m.SquadErr != nil {
+			return paneStyle.Render("Error: " + m.SquadErr.Error())
+		}
 		return paneStyle.Render("Loading squad...")
 	} else if gotSquad {
 
@@ -115,6 +159,9 @@ func (m Model) View() string {
 	}
 
 	if !gotFixtures {
+		if m.FixtureErr != nil {
+			return paneStyle.Render("Error: " + m.FixtureErr.Error())
+		}
 		return paneStyle.Render("Loading fixtures...")
 	} else if gotFixtures {
 		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
@@ -122,8 +169,18 @@ func (m Model) View() string {
 		fixturesPane = paneStyle.Render(FormatFixtures)
 
 	}
-	if gotFixtures && gotSquad {
-		combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane)
+
+	if !gotVerdict {
+		if m.VerdictErr != nil {
+			return paneStyle.Render("Error: " + m.VerdictErr.Error())
+		}
+		return paneStyle.Render("Loading Verdict...")
+	} else if gotVerdict {
+		VerdictView = verdictStyle.Render(m.VerdictText[:m.RevealedChars])
+	}
+
+	if gotFixtures && gotSquad && gotVerdict {
+		combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView)
 		return combined
 	}
 

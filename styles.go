@@ -43,6 +43,10 @@ var (
 	footerStyle = baseStyle.
 			Foreground(colorFooter)
 
+	verdictStyle = paneStyle.
+			Foreground(colorAccent).
+			Width(40)
+
 	fdrVeryHardStyle = baseStyle.Foreground(colorVeryHard)
 	fdrHardStyle     = baseStyle.Foreground(colorHard)
 	fdrNeutralStyle  = baseStyle.Foreground(colorNeutral)
