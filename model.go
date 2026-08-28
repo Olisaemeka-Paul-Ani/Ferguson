@@ -11,6 +11,15 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+const (
+	PlayerName   = "Player"
+	PositionName = "Pos"
+	ClubName     = "Club"
+	Price        = "Cost"
+	TotalPoints  = "TotalPoints"
+	GWPoints     = "GW Points"
+)
+
 type Model struct {
 	Width         int
 	Height        int
