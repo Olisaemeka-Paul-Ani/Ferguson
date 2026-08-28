@@ -9,6 +9,7 @@ import (
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ui"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/evertras/bubble-table/table"
 )
 
 const (
@@ -19,6 +20,19 @@ const (
 	TotalPoints  = "TotalPoints"
 	GWPoints     = "GW Points"
 )
+
+func NewModel() Model {
+	return Model{
+		simpleTable: table.New([]table.Column{
+			table.NewColumn(PlayerName, "Name", 16),
+			table.NewColumn(PositionName, "Pos", 5),
+			table.NewColumn(ClubName, "Club", 6),
+			table.NewColumn(Price, "cost", 6),
+			table.NewColumn(TotalPoints, "TotalPoints", 12),
+			table.NewColumn(GWPoints, "GW Points", 10),
+		}).WithRows([]table.Row{}),
+	}
+}
 
 type Model struct {
 	Width         int
@@ -32,6 +46,7 @@ type Model struct {
 	SquadErr      error
 	FixtureErr    error
 	VerdictErr    error
+	simpleTable   table.Model
 }
 
 func (m Model) Init() tea.Cmd {
