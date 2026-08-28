@@ -121,9 +121,25 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		}
 	case TeamSheet:
+
 		if msg.Err != nil {
 			m.SquadErr = msg.Err
 		}
+		i := 0
+		var rows []table.Row
+		for i < len(msg.Players) {
+			rowData := table.RowData{
+				PlayerName:   msg.Players[i].WebName,
+				PositionName: msg.Players[i].Position,
+				ClubName:     msg.Players[i].Club,
+				Price:        msg.Players[i].Cost,
+				TotalPoints:  msg.Players[i].TotalPoints,
+				GWPoints:     msg.Players[i].GameweekPoints,
+			}
+			rows = append(rows, table.NewRow(rowData))
+			i = i + 1
+		}
+		m.simpleTable = m.simpleTable.WithRows(rows)
 		m.Squad = msg.Players
 
 	case FixtureSheet:

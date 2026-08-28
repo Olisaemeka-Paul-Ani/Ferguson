@@ -11,8 +11,8 @@ func main() {
 	nFlag := flag.Int("team", 0, "This is supposed to be your FPL team ID")
 	flag.Parse()
 	fmt.Println(*nFlag)
-	m := Model{}
-	p := tea.NewProgram(m)
+
+	p := tea.NewProgram(NewModel())
 
 	_, err := p.Run()
 
