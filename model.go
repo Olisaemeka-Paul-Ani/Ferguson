@@ -30,7 +30,7 @@ func NewModel() Model {
 			table.NewColumn(Price, "cost", 6),
 			table.NewColumn(TotalPoints, "TotalPoints", 12),
 			table.NewColumn(GWPoints, "GW Points", 10),
-		}).WithRows([]table.Row{}),
+		}).WithRows([]table.Row{}).WithPageSize(15),
 	}
 }
 

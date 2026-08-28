@@ -44,6 +44,7 @@ var (
 			Foreground(colorFooter)
 
 	verdictStyle = paneStyle.
+			Copy().
 			Foreground(colorAccent).
 			Width(40)
 
