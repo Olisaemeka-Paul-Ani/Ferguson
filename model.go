@@ -174,8 +174,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	var CleanedData [][]string
-	var FormattedData string
+
 	gotSquad := len(m.Squad) > 0
 	gotFixtures := len(m.Fixtures) > 0
 	gotVerdict := len(m.VerdictText) > 0
@@ -192,10 +191,7 @@ func (m Model) View() string {
 		return paneStyle.Render("Loading squad...")
 	} else if gotSquad {
 
-		CleanedData = ui.CleanData(m.Squad)
-		FormattedData = ui.FormatData(CleanedData)
-		squadPane = activePaneStyle.Render(FormattedData)
-
+		squadPane = activePaneStyle.Render(m.simpleTable.View())
 	}
 
 	if !gotFixtures {
