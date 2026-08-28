@@ -46,7 +46,8 @@ var (
 	verdictStyle = paneStyle.
 			Copy().
 			Foreground(colorAccent).
-			Width(40)
+			Width(40).
+			MaxHeight(15)
 
 	fdrVeryHardStyle = baseStyle.Foreground(colorVeryHard)
 	fdrHardStyle     = baseStyle.Foreground(colorHard)

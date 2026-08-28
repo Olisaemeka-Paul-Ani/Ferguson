@@ -53,7 +53,7 @@ func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
 	output := map[int][]fpl.Fixture{}
 	fixtures := FindUpcomingMatches(games)
 	i := 1
-	for i <= 20 {
+	for i <= 5 {
 		output[i] = FirstFive(FixturesForClub(i, fixtures))
 		i = i + 1
 	}

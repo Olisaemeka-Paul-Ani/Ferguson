@@ -12,7 +12,7 @@ func main() {
 	flag.Parse()
 	fmt.Println(*nFlag)
 
-	p := tea.NewProgram(NewModel())
+	p := tea.NewProgram(NewModel(), tea.WithAltScreen())
 
 	_, err := p.Run()
 
