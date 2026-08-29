@@ -30,7 +30,7 @@ func NewModel() Model {
 			table.NewColumn(Price, "cost", 6),
 			table.NewColumn(TotalPoints, "TotalPoints", 12),
 			table.NewColumn(GWPoints, "GW Points", 10),
-		}).WithRows([]table.Row{}).WithPageSize(15),
+		}).WithRows([]table.Row{}).WithPageSize(15).Focused(true),
 	}
 }
 
@@ -111,6 +111,13 @@ func tickCmd() tea.Cmd {
 }
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var (
+		cmd  tea.Cmd
+		cmds []tea.Cmd
+	)
+
+	m.simpleTable, cmd = m.simpleTable.Update(msg)
+	cmds = append(cmds, cmd)
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -167,9 +174,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.RevealedChars < len(m.VerdictText) {
 			return m, tickCmd()
 		}
+
 	}
 
-	return m, nil
+	return m, tea.Batch(cmds...)
 
 }
 
