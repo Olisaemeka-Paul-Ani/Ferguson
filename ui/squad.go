@@ -38,3 +38,13 @@ func FormatData(squad [][]string) string {
 	}
 	return output
 }
+
+func GetPlayerDict() map[int]string {
+	output := map[int]string{
+		1: "GK",
+		2: "DEF",
+		3: "MID",
+		4: "FOR",
+	}
+	return output
+}
