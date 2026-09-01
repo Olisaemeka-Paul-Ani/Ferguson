@@ -6,6 +6,33 @@ import (
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 )
 
+func getFixtureDict() map[int]string {
+	FixtureDict := map[int]string{
+		1:  "Arsenal",
+		2:  "Aston Villa",
+		3:  "Bournemouth",
+		4:  "Brentford",
+		5:  "Brigton",
+		6:  "Chelsea",
+		7:  "Coventry",
+		8:  "Crystal P.",
+		9:  "Everton",
+		10: "Fulham",
+		11: "Hull C.",
+		12: "Ipswitch T",
+		13: "Leeds Utd",
+		14: "Liverpool",
+		15: "Man City",
+		16: "Man Utd",
+		17: "NewCastle",
+		18: "Nottingham",
+		19: "SunderLand",
+		20: "TottenHam Hotspur",
+	}
+
+	return FixtureDict
+}
+
 func FindUpcomingMatches(games []fpl.Fixture) []fpl.Fixture {
 	var output []fpl.Fixture
 	i := 0
