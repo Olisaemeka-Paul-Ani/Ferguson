@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ai"
@@ -39,6 +40,7 @@ type Model struct {
 	Height        int
 	ActivePane    int
 	WillQuit      bool
+	ShowDetail    bool
 	VerdictText   string
 	Squad         []fpl.Player
 	Fixtures      []fpl.Fixture
@@ -126,7 +128,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.WillQuit = true
 			return m, tea.Quit
 
+		case "enter":
+			m.ShowDetail = true
+
+		case "esc":
+			m.ShowDetail = false
 		}
+
 	case TeamSheet:
 
 		if msg.Err != nil {
@@ -191,6 +199,7 @@ func (m Model) View() string {
 	var squadPane string
 	var fixturesPane string
 	var VerdictView string
+	var HighLightedPane string
 
 	if !gotSquad {
 		if m.SquadErr != nil {
@@ -198,7 +207,6 @@ func (m Model) View() string {
 		}
 		return paneStyle.Render("Loading squad...")
 	} else if gotSquad {
-
 		squadPane = activePaneStyle.Render(m.simpleTable.View())
 	}
 
@@ -208,10 +216,44 @@ func (m Model) View() string {
 		}
 		return paneStyle.Render("Loading fixtures...")
 	} else if gotFixtures {
+		HighlightedRow := m.simpleTable.HighlightedRow()
+		HighlightedPlayer := HighlightedRow.Data[PlayerName].(string)
+		output := ""
+		i := 0
+
+		for i < len(m.Squad) {
+			LookUp := ui.GetFixtureDict()
+			PositionDict := ui.GetPlayerDict()
+			current := m.Squad[i]
+			if current.WebName == HighlightedPlayer {
+				output = output + "\n"
+				output = output + "Name: " + current.WebName + "\n"
+				output = output + "Position: " + PositionDict[current.Position] + "\n"
+				output = output + "Club: " + LookUp[current.Club] + "\n"
+				output = output + "Cost: " + strconv.FormatFloat(float64(current.Cost)/10, 'f', 1, 64) + "\n"
+				output = output + "TotalPoints " + strconv.Itoa(current.TotalPoints) + "\n"
+				output = output + "GWPoints " + strconv.Itoa(current.GameweekPoints) + "\n"
+				output = output + "Fixtures: " + "\n"
+
+				PlaceHolder := ui.FirstFive(ui.FixturesForClub(current.Club, ui.FindUpcomingMatches(m.Fixtures)))
+				j := 0
+
+				for j < len(PlaceHolder) {
+					if current.Club == PlaceHolder[j].TeamHome {
+						output = output + " " + "vs " + LookUp[PlaceHolder[j].TeamAway] + "(H) -" + "Difficulty " + fdrColorMap[PlaceHolder[j].TeamHomeDifficulty] + "\n"
+					} else {
+						output = output + " " + "vs " + LookUp[PlaceHolder[j].TeamHome] + "(A) -" + "Difficulty " + fdrColorMap[PlaceHolder[j].TeamAwayDifficulty] + "\n"
+					}
+					j = j + 1
+				}
+			}
+			i = i + 1
+		}
+
 		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
 		FormatFixtures = ui.FormatFixtures(GroupFirstFive, fdrColorMap)
 		fixturesPane = paneStyle.Render(FormatFixtures)
-
+		HighLightedPane = paneStyle.Render(output)
 	}
 
 	if !gotVerdict {
@@ -224,8 +266,14 @@ func (m Model) View() string {
 	}
 
 	if gotFixtures && gotSquad && gotVerdict {
-		combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView)
-		return combined
+		if m.ShowDetail == true {
+			combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, HighLightedPane, VerdictView)
+			return combined
+		} else {
+			combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView)
+			return combined
+		}
+
 	}
 
 	return ""
