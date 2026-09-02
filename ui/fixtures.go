@@ -6,7 +6,7 @@ import (
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 )
 
-func getFixtureDict() map[int]string {
+func GetFixtureDict() map[int]string {
 	FixtureDict := map[int]string{
 		1:  "Arsenal",
 		2:  "Aston Villa",
@@ -33,6 +33,7 @@ func getFixtureDict() map[int]string {
 	return FixtureDict
 }
 
+// GETS ALL THE GAMES THAT HAVE NOT BEEN PLAYED YET
 func FindUpcomingMatches(games []fpl.Fixture) []fpl.Fixture {
 	var output []fpl.Fixture
 	i := 0
@@ -46,6 +47,7 @@ func FindUpcomingMatches(games []fpl.Fixture) []fpl.Fixture {
 	return output
 }
 
+// GET'S THE FIRST FIVE GAMES FROM A SLICE OF FIXTURES (SUPPOSED TO BE FindUpcomingMatches()). TO BE USED AS HELPER FUNCTION BELOW
 func FirstFive(games []fpl.Fixture) []fpl.Fixture {
 	var output []fpl.Fixture
 	i := 0
@@ -64,6 +66,7 @@ func FirstFive(games []fpl.Fixture) []fpl.Fixture {
 	return output
 }
 
+// GET'S ALL THE FIXTURES OF A GIVEN CLUB GIVEN THE CLUB ID AS AN EXTRA  ARGUMENT (SUPPOSED TO BE USED AFTER FETCHING FIXTURE DATA WITH fpl.FetchAllFixtures(), THEN CLEANED WITH FindUpcomingMatches()). ALSO SOMEWHAT OF A HELPER
 func FixturesForClub(team int, games []fpl.Fixture) []fpl.Fixture {
 	var output []fpl.Fixture
 	i := 0
@@ -76,6 +79,7 @@ func FixturesForClub(team int, games []fpl.Fixture) []fpl.Fixture {
 	return output
 }
 
+// STORES ALL CLUBS (INTENDED FOR 20, USED 5 FOR DISPLAY BOUNDING) IN A HASHMAP SUCH THAT KEY == CLUB ID AND VAL == NEXT 5 UPCOMING MATHES
 func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
 	output := map[int][]fpl.Fixture{}
 	fixtures := FindUpcomingMatches(games)
