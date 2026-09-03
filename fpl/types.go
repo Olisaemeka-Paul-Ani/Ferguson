@@ -7,7 +7,10 @@ type Player struct {
 	Cost        int    `json:"now_cost"`
 	TotalPoints int    `json:"total_points"`
 
-	GameweekPoints int `json:"event_points"`
+	GameweekPoints  int    `json:"event_points"`
+	News            string `json:"news"`
+	Status          string `json:"status"`
+	ChanceOfPlaying *int   `json:"chance_of_playing_next_round"`
 }
 
 type Fixture struct {
