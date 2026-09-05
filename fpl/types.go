@@ -11,6 +11,7 @@ type Player struct {
 	News            string `json:"news"`
 	Status          string `json:"status"`
 	ChanceOfPlaying *int   `json:"chance_of_playing_next_round"`
+	Identification  int    `json:"id"`
 }
 
 type Fixture struct {
@@ -20,4 +21,12 @@ type Fixture struct {
 	TeamHomeDifficulty int  `json:"team_h_difficulty"`
 	TeamAwayDifficulty int  `json:"team_a_difficulty"`
 	Finished           bool `json:"finished"`
+}
+
+type Points struct {
+	PointsForPerson int `json:"total_points"`
+}
+
+type FormStruct struct {
+	Form []Points `json:"history"`
 }
