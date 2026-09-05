@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 type Container struct {
@@ -52,4 +53,28 @@ func FetchAllFixtures() ([]Fixture, error) {
 
 	return FixtureList, nil
 
+}
+
+func FetchFormData(id int) ([]Points, error) {
+	enp := "https://fantasy.premierleague.com/api/element-summary/"
+	enp = enp + strconv.Itoa(id) + "/"
+	resp, err := http.Get(enp)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var FormList FormStruct
+	err = json.Unmarshal(body, &FormList)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return FormList.Form, nil
 }
