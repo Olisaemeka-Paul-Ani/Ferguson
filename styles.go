@@ -32,6 +32,21 @@ var FtColorMap = map[int]string{
 	100: fdrVeryEasyStyle.Render("■■■■■"),
 }
 
+var FormMap = map[int]string{
+	-1: sparkBadStyle.Render("▁"),
+	0:  sparkGoodStyle.Render("▁"),
+	1:  sparkGoodStyle.Render("▁"),
+	2:  sparkGoodStyle.Render("▂"),
+	3:  sparkGoodStyle.Render("▂"),
+	4:  sparkGoodStyle.Render("▃"),
+	5:  sparkGoodStyle.Render("▃"),
+	6:  sparkGoodStyle.Render("▅"),
+	7:  sparkGoodStyle.Render("▅"),
+	8:  sparkGoodStyle.Render("▅"),
+	9:  sparkGoodStyle.Render("▇"),
+	10: sparkGoodStyle.Render("▇"),
+}
+
 func GetColor(arg *int) string {
 	if arg == nil {
 		return FtColorMap[100]
@@ -74,4 +89,6 @@ var (
 	fdrNeutralStyle  = baseStyle.Foreground(colorNeutral)
 	fdrEasyStyle     = baseStyle.Foreground(colorEasy)
 	fdrVeryEasyStyle = baseStyle.Foreground(colorVeryEasy)
+	sparkBadStyle    = baseStyle.Foreground(colorHard)
+	sparkGoodStyle   = baseStyle.Foreground(colorAccent)
 )
