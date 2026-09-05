@@ -26,6 +26,14 @@ func CleanData(squad []fpl.Player) [][]string {
 
 }
 
+var StatusMap = map[string]string{
+	"a": "Available",
+	"d": "Doubtful",
+	"i": "Injured",
+	"s": "Suspended",
+	"u": "Unavailable",
+}
+
 func FormatData(squad [][]string) string {
 	output := ""
 	i := 0
