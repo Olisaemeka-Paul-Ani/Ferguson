@@ -27,7 +27,7 @@ func GetFixtureDict() map[int]string {
 		17: "NewCastle",
 		18: "Nottingham",
 		19: "SunderLand",
-		20: "TottenHam Hotspur",
+		20: "Spurs",
 	}
 
 	return FixtureDict

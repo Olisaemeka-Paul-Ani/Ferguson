@@ -233,6 +233,7 @@ func (m Model) View() string {
 				output = output + "Cost: " + strconv.FormatFloat(float64(current.Cost)/10, 'f', 1, 64) + "\n"
 				output = output + "TotalPoints " + strconv.Itoa(current.TotalPoints) + "\n"
 				output = output + "GWPoints " + strconv.Itoa(current.GameweekPoints) + "\n"
+				output = output + "Fitness: " + ui.StatusMap[current.Status] + " " + GetColor(current.ChanceOfPlaying) + " " + current.News + "\n"
 				output = output + "Fixtures: " + "\n"
 
 				PlaceHolder := ui.FirstFive(ui.FixturesForClub(current.Club, ui.FindUpcomingMatches(m.Fixtures)))
@@ -253,7 +254,7 @@ func (m Model) View() string {
 		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
 		FormatFixtures = ui.FormatFixtures(GroupFirstFive, fdrColorMap)
 		fixturesPane = paneStyle.Render(FormatFixtures)
-		HighLightedPane = paneStyle.Render(output)
+		HighLightedPane = HighlightStyle.Render(output)
 	}
 
 	if !gotVerdict {

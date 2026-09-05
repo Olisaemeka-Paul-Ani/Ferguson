@@ -65,6 +65,10 @@ var (
 			Width(40).
 			MaxHeight(15)
 
+	HighlightStyle = paneStyle.
+			Copy().
+			Width(40)
+
 	fdrVeryHardStyle = baseStyle.Foreground(colorVeryHard)
 	fdrHardStyle     = baseStyle.Foreground(colorHard)
 	fdrNeutralStyle  = baseStyle.Foreground(colorNeutral)
