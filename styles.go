@@ -24,6 +24,22 @@ var fdrColorMap = map[int]string{
 	5: fdrVeryHardStyle.Render("■■■■■"),
 }
 
+var FtColorMap = map[int]string{
+	0:   fdrVeryHardStyle.Render("□□□□□"),
+	25:  fdrHardStyle.Render("■□□□□"),
+	50:  fdrNeutralStyle.Render("■■■□□"),
+	75:  fdrEasyStyle.Render("■■■■□"),
+	100: fdrVeryEasyStyle.Render("■■■■■"),
+}
+
+func GetColor(arg *int) string {
+	if arg == nil {
+		return FtColorMap[100]
+	} else {
+		return FtColorMap[*arg]
+	}
+}
+
 var (
 	baseStyle = lipgloss.NewStyle().
 			Foreground(colorText).
