@@ -20,6 +20,7 @@ const (
 	Price        = "Cost"
 	TotalPoints  = "TotalPoints"
 	GWPoints     = "GW Points"
+	Id           = "Identification"
 )
 
 func NewModel() Model {
@@ -32,23 +33,25 @@ func NewModel() Model {
 			table.NewColumn(TotalPoints, "TotalPoints", 12),
 			table.NewColumn(GWPoints, "GW Points", 10),
 		}).WithRows([]table.Row{}).WithPageSize(15).Focused(true),
+		SparklineGraph: make(map[int][]fpl.Points),
 	}
 }
 
 type Model struct {
-	Width         int
-	Height        int
-	ActivePane    int
-	WillQuit      bool
-	ShowDetail    bool
-	VerdictText   string
-	Squad         []fpl.Player
-	Fixtures      []fpl.Fixture
-	RevealedChars int
-	SquadErr      error
-	FixtureErr    error
-	VerdictErr    error
-	simpleTable   table.Model
+	Width          int
+	Height         int
+	ActivePane     int
+	WillQuit       bool
+	ShowDetail     bool
+	VerdictText    string
+	Squad          []fpl.Player
+	Fixtures       []fpl.Fixture
+	RevealedChars  int
+	SquadErr       error
+	FixtureErr     error
+	VerdictErr     error
+	simpleTable    table.Model
+	SparklineGraph map[int][]fpl.Points
 }
 
 func (m Model) Init() tea.Cmd {
@@ -69,6 +72,12 @@ type FixtureSheet struct {
 type VerdictSheet struct {
 	Verdict string
 	Err     error
+}
+
+type FormSheet struct {
+	id   int
+	Err  error
+	Form []fpl.Points
 }
 
 func FetchFixturesCmd() tea.Cmd {
@@ -150,6 +159,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				Price:        msg.Players[i].Cost,
 				TotalPoints:  msg.Players[i].TotalPoints,
 				GWPoints:     msg.Players[i].GameweekPoints,
+				Id:           msg.Players[i].Identification,
 			}
 			rows = append(rows, table.NewRow(rowData))
 			i = i + 1
