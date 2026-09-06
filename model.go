@@ -80,6 +80,17 @@ type FormSheet struct {
 	Form []fpl.Points
 }
 
+func FetchFormCmd(id int) tea.Cmd {
+	return func() tea.Msg {
+		FormData, err := fpl.FetchFormData(id)
+		if err != nil {
+			return FormSheet{Err: err}
+		}
+		result := FormSheet{id: id, Form: FormData}
+		return result
+	}
+}
+
 func FetchFixturesCmd() tea.Cmd {
 	return func() tea.Msg {
 		SheetData, err := fpl.FetchAllFixtures()
