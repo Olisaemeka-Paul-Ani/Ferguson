@@ -263,9 +263,15 @@ func (m Model) View() string {
 		return paneStyle.Render("Loading fixtures...")
 	} else if gotFixtures {
 		HighlightedRow := m.simpleTable.HighlightedRow()
-		HighlightedPlayer := HighlightedRow.Data[PlayerName].(string)
+		HighlightedPlayer, ok := HighlightedRow.Data[PlayerName].(string)
 		output := ""
 		i := 0
+		if !ok {
+			output = "Error in asserting player Data"
+			i = len(m.Squad)
+		} else {
+			i = 0
+		}
 
 		for i < len(m.Squad) {
 			LookUp := ui.GetFixtureDict()
