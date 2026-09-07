@@ -280,6 +280,13 @@ func (m Model) View() string {
 				output = output + "TotalPoints " + strconv.Itoa(current.TotalPoints) + "\n"
 				output = output + "GWPoints " + strconv.Itoa(current.GameweekPoints) + "\n"
 				output = output + "Fitness: " + ui.StatusMap[current.Status] + " " + GetColor(current.ChanceOfPlaying) + " " + current.News + "\n"
+				output = output + "Form: "
+				if m.SparklineGraph[current.Identification] == nil {
+					output = output + "Data Unavailable" + "\n"
+
+				} else {
+					output = output + ui.GetForm(m.SparklineGraph[current.Identification], FormMap) + "\n"
+				}
 				output = output + "Fixtures: " + "\n"
 
 				PlaceHolder := ui.FirstFive(ui.FixturesForClub(current.Club, ui.FindUpcomingMatches(m.Fixtures)))
