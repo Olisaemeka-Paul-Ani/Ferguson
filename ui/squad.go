@@ -27,10 +27,14 @@ func CleanData(squad []fpl.Player) [][]string {
 }
 
 func GetForm(PrevPoints []fpl.Points, ColorMap map[int]string) string {
-	count := 5
+
+	i := len(PrevPoints) - 5
 	output := ""
-	i := len(PrevPoints) - 1
-	for count > 0 && i >= 0 {
+	if i < 0 {
+		i = 0
+	}
+
+	for i < len(PrevPoints) {
 		if PrevPoints[i].PointsForPerson < 0 {
 			output = output + ColorMap[-1]
 		} else if PrevPoints[i].PointsForPerson > 9 {
@@ -39,11 +43,9 @@ func GetForm(PrevPoints []fpl.Points, ColorMap map[int]string) string {
 			output = output + ColorMap[PrevPoints[i].PointsForPerson]
 
 		}
-		count = count - 1
-		i = i - 1
+		i = i + 1
 	}
 	return output
-
 }
 
 var StatusMap = map[string]string{
