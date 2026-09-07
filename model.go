@@ -148,48 +148,73 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.WillQuit = true
 			return m, tea.Quit
 
+		case "up", "down":
+			if m.ShowDetail == true {
+				id := m.simpleTable.HighlightedRow().Data[Id].(int)
+				if m.SparklineGraph[id] != nil {
+					return m, nil
+				}
+				return m, FetchFormCmd(id)
+			}
+			return m, nil
+
 		case "enter":
 			m.ShowDetail = true
+			id := m.simpleTable.HighlightedRow().Data[Id].(int)
+			if m.SparklineGraph[id] != nil {
+				return m, nil
+			}
+			return m, FetchFormCmd(id)
 
 		case "esc":
 			m.ShowDetail = false
+		}
+
+	case FormSheet:
+		if msg.Err != nil {
+			m.SquadErr = msg.Err
+		} else {
+			m.SparklineGraph[msg.id] = msg.Form
 		}
 
 	case TeamSheet:
 
 		if msg.Err != nil {
 			m.SquadErr = msg.Err
-		}
-		i := 0
-		var rows []table.Row
-		for i < len(msg.Players) {
-			rowData := table.RowData{
-				PlayerName:   msg.Players[i].WebName,
-				PositionName: msg.Players[i].Position,
-				ClubName:     msg.Players[i].Club,
-				Price:        msg.Players[i].Cost,
-				TotalPoints:  msg.Players[i].TotalPoints,
-				GWPoints:     msg.Players[i].GameweekPoints,
-				Id:           msg.Players[i].Identification,
+		} else {
+			i := 0
+			var rows []table.Row
+			for i < len(msg.Players) {
+				rowData := table.RowData{
+					PlayerName:   msg.Players[i].WebName,
+					PositionName: msg.Players[i].Position,
+					ClubName:     msg.Players[i].Club,
+					Price:        msg.Players[i].Cost,
+					TotalPoints:  msg.Players[i].TotalPoints,
+					GWPoints:     msg.Players[i].GameweekPoints,
+					Id:           msg.Players[i].Identification,
+				}
+				rows = append(rows, table.NewRow(rowData))
+				i = i + 1
 			}
-			rows = append(rows, table.NewRow(rowData))
-			i = i + 1
+			m.simpleTable = m.simpleTable.WithRows(rows)
+			m.Squad = msg.Players
 		}
-		m.simpleTable = m.simpleTable.WithRows(rows)
-		m.Squad = msg.Players
 
 	case FixtureSheet:
 		if msg.Err != nil {
 			m.FixtureErr = msg.Err
+		} else {
+			m.Fixtures = msg.Fixtures
 		}
-		m.Fixtures = msg.Fixtures
 
 	case VerdictSheet:
 		if msg.Err != nil {
 			m.VerdictErr = msg.Err
+		} else {
+			m.VerdictText = msg.Verdict
+			return m, tickCmd()
 		}
-		m.VerdictText = msg.Verdict
-		return m, tickCmd()
 
 	case tickMsg:
 		var remaining int
