@@ -154,10 +154,10 @@ func SendGroqRequest(byt []byte) ([]byte, error) {
 		return nil, err
 	}
 	body, err := io.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
 	return body, nil
 }
