@@ -50,6 +50,7 @@ type Model struct {
 	SquadErr       error
 	FixtureErr     error
 	VerdictErr     error
+	FormErr        error
 	simpleTable    table.Model
 	SparklineGraph map[int][]fpl.Points
 }
@@ -172,7 +173,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case FormSheet:
 		if msg.Err != nil {
-			m.SquadErr = msg.Err
+			m.FormErr = msg.Err
 		} else {
 			m.SparklineGraph[msg.id] = msg.Form
 		}
@@ -286,12 +287,16 @@ func (m Model) View() string {
 				output = output + "TotalPoints " + strconv.Itoa(current.TotalPoints) + "\n"
 				output = output + "GWPoints " + strconv.Itoa(current.GameweekPoints) + "\n"
 				output = output + "Fitness: " + ui.StatusMap[current.Status] + " " + GetColor(current.ChanceOfPlaying) + " " + current.News + "\n"
-				output = output + "Form: "
-				if m.SparklineGraph[current.Identification] == nil {
-					output = output + "Data Unavailable" + "\n"
-
+				if m.FormErr != nil {
+					output = output + "Form: Unable to Fetch Form Data." + "\n"
 				} else {
-					output = output + ui.GetForm(m.SparklineGraph[current.Identification], FormMap) + "\n"
+					output = output + "Form: "
+					if m.SparklineGraph[current.Identification] == nil {
+						output = output + "Data Unavailable" + "\n"
+
+					} else {
+						output = output + ui.GetForm(m.SparklineGraph[current.Identification], FormMap) + "\n"
+					}
 				}
 				output = output + "Fixtures: " + "\n"
 
@@ -306,6 +311,7 @@ func (m Model) View() string {
 					}
 					j = j + 1
 				}
+
 			}
 			i = i + 1
 		}

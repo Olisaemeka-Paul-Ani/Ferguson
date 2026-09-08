@@ -95,7 +95,7 @@ func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
 func FormatFixtures(clubs map[int][]fpl.Fixture, blocks map[int]string) string {
 	output := ""
 	var sortedSlice []int
-	for k, _ := range clubs {
+	for k := range clubs {
 		sortedSlice = append(sortedSlice, k)
 	}
 	slices.Sort(sortedSlice)
