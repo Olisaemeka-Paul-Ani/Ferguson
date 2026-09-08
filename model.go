@@ -169,6 +169,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "esc":
 			m.ShowDetail = false
+
+		case "right":
+			m.ActivePane = (m.ActivePane + 1) % 3
+
+		case "left":
+			m.ActivePane = (m.ActivePane - 1 + 3) % 3
+
 		}
 
 	case FormSheet:
