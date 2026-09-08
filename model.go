@@ -261,7 +261,11 @@ func (m Model) View() string {
 		}
 		return paneStyle.Render("Loading squad...")
 	} else if gotSquad {
-		squadPane = activePaneStyle.Render(m.simpleTable.View())
+		if m.ActivePane == 0 {
+			squadPane = activePaneStyle.Render(m.simpleTable.View())
+		} else {
+			squadPane = paneStyle.Render(m.simpleTable.View())
+		}
 	}
 
 	if !gotFixtures {
@@ -325,8 +329,14 @@ func (m Model) View() string {
 
 		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
 		FormatFixtures = ui.FormatFixtures(GroupFirstFive, fdrColorMap)
-		fixturesPane = paneStyle.Render(FormatFixtures)
-		HighLightedPane = HighlightStyle.Render(output)
+		if m.ActivePane == 1 {
+			fixturesPane = activePaneStyle.Render(FormatFixtures)
+			HighLightedPane = ActiveHighlightStyle.Render(output)
+		} else {
+			fixturesPane = paneStyle.Render(FormatFixtures)
+			HighLightedPane = HighlightStyle.Render(output)
+		}
+
 	}
 
 	if !gotVerdict {
@@ -335,7 +345,11 @@ func (m Model) View() string {
 		}
 		return paneStyle.Render("Loading Verdict...")
 	} else if gotVerdict {
-		VerdictView = verdictStyle.Render(m.VerdictText[:m.RevealedChars])
+		if m.ActivePane == 2 {
+			VerdictView = VerdictActivePaneStyle.Render(m.VerdictText[:m.RevealedChars])
+		} else {
+			VerdictView = verdictStyle.Render(m.VerdictText[:m.RevealedChars])
+		}
 	}
 
 	if gotFixtures && gotSquad && gotVerdict {
