@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"slices"
 	"strconv"
 
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
@@ -93,23 +94,28 @@ func GroupFirstFive(games []fpl.Fixture) map[int][]fpl.Fixture {
 
 func FormatFixtures(clubs map[int][]fpl.Fixture, blocks map[int]string) string {
 	output := ""
-
-	for k, v := range clubs {
+	var sortedSlice []int
+	for k, _ := range clubs {
+		sortedSlice = append(sortedSlice, k)
+	}
+	slices.Sort(sortedSlice)
+	i := 0
+	for i < len(sortedSlice) {
 		var placeHolder string
-		placeHolder += "Club " + strconv.Itoa(k)
+		placeHolder += "Club " + strconv.Itoa(sortedSlice[i])
 		placeHolder += "\n"
 
-		i := 0
-		for i < len(v) {
-			if v[i].TeamHome == k {
-				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamAway) + " (H) " + "-" + "Difficulty " + blocks[v[i].TeamHomeDifficulty] + "\n"
+		j := 0
+		for j < len(clubs[sortedSlice[i]]) {
+			if sortedSlice[i] == clubs[sortedSlice[i]][j].TeamHome {
+				placeHolder += " " + " vs " + strconv.Itoa(clubs[sortedSlice[i]][j].TeamAway) + " (H) " + "-" + "Difficulty " + blocks[clubs[sortedSlice[i]][j].TeamHomeDifficulty] + "\n"
 			} else {
-				placeHolder += " " + " vs " + strconv.Itoa(v[i].TeamHome) + " (A) " + "-" + "Difficulty " + blocks[v[i].TeamAwayDifficulty] + "\n"
+				placeHolder += " " + " vs " + strconv.Itoa(clubs[sortedSlice[i]][j].TeamHome) + " (A) " + "-" + "Difficulty " + blocks[clubs[sortedSlice[i]][j].TeamAwayDifficulty] + "\n"
 			}
-			i = i + 1
+			j = j + 1
 		}
 		output = output + placeHolder
-
+		i = i + 1
 	}
 
 	return output
