@@ -64,6 +64,9 @@ var (
 			Border(lipgloss.ThickBorder()).
 			BorderForeground(colorBorder)
 
+	loadingStyle = paneStyle.
+			Align(lipgloss.Center)
+
 	activePaneStyle = paneStyle.
 			BorderForeground(colorAccent)
 
