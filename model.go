@@ -388,10 +388,10 @@ func (m Model) View() string {
 
 	if gotFixtures && gotSquad && gotVerdict {
 		if m.ShowDetail == true {
-			combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, HighLightedPane, VerdictView)
+			combined := lipgloss.JoinVertical(lipgloss.Center, HeadStyle.Render(ui.Title[:m.RevealedTitle]), lipgloss.JoinHorizontal(lipgloss.Top, squadPane, HighLightedPane, VerdictView))
 			return combined
 		} else {
-			combined := lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView)
+			combined := lipgloss.JoinVertical(lipgloss.Center, HeadStyle.Render(ui.Title[:m.RevealedTitle]), lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView))
 			return combined
 		}
 
