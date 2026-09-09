@@ -47,6 +47,7 @@ type Model struct {
 	Squad          []fpl.Player
 	Fixtures       []fpl.Fixture
 	RevealedChars  int
+	LoadingIndex   int
 	SquadErr       error
 	FixtureErr     error
 	VerdictErr     error
@@ -130,6 +131,14 @@ type tickMsg time.Time
 func tickCmd() tea.Cmd {
 	return tea.Tick(time.Millisecond*25, func(t time.Time) tea.Msg {
 		return tickMsg(t)
+	})
+}
+
+type loadingTickMsg time.Time
+
+func loadingTickCmd() tea.Cmd {
+	return tea.Tick(time.Millisecond*2000, func(t time.Time) tea.Msg {
+		return loadingTickMsg(t)
 	})
 }
 
@@ -236,6 +245,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.RevealedChars < len(m.VerdictText) {
 			return m, tickCmd()
 		}
+
+	case loadingTickMsg:
+		m.LoadingIndex = (m.LoadingIndex + 1) % len(ui.LoadingQuotes)
+		return m, loadingTickCmd()
 
 	}
 
