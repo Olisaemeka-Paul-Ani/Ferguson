@@ -47,6 +47,7 @@ type Model struct {
 	Squad          []fpl.Player
 	Fixtures       []fpl.Fixture
 	RevealedChars  int
+	RevealedTitle  int
 	LoadingIndex   int
 	SquadErr       error
 	FixtureErr     error
@@ -124,6 +125,14 @@ func FetchVerdictCmd() tea.Cmd {
 		result := VerdictSheet{Verdict: SheetData}
 		return result
 	}
+}
+
+type titleMsg time.Time
+
+func titleCmd() tea.Cmd {
+	return tea.Tick(time.Millisecond*25, func(t time.Time) tea.Msg {
+		return titleMsg(t)
+	})
 }
 
 type tickMsg time.Time
