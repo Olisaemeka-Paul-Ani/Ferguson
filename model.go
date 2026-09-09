@@ -57,7 +57,7 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
-	return tea.Batch(FetchPlayersCmd(), FetchFixturesCmd(), FetchVerdictCmd())
+	return tea.Batch(FetchPlayersCmd(), FetchFixturesCmd(), FetchVerdictCmd(), loadingTickCmd())
 
 }
 
