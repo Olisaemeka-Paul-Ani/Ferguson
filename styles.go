@@ -65,6 +65,7 @@ var (
 			BorderForeground(colorBorder)
 
 	loadingStyle = paneStyle.
+			Width(80).
 			Align(lipgloss.Center)
 
 	activePaneStyle = paneStyle.
