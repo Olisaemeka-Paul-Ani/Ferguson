@@ -2,15 +2,12 @@
 
 *Currently in development.*
 
-Ferguson is a fantasy soccer analytics terminal — a Bloomberg Terminal-style
-dashboard for Fantasy Premier League managers who want a sharper edge than
-guesswork.
+A TUI dashboard for Fantasy Premier League — Bloomberg Terminal-style, dark,
+keyboard-only, multi-pane.
 
-**Purpose:** pull your live squad, fixtures, and form data, then use AI to
-turn it into a real recommendation — who to captain, who to bench, and
-whether that transfer is actually worth it. No spreadsheets, no tab-switching
-between five FPL sites. One dark, keyboard-only screen, three panes, one
-verdict.
+Pulls your live squad, fixtures, and form data from the public FPL API, and
+generates an AI-written verdict (captain pick, bench call, one transfer
+worth considering) styled as Sir Alex Ferguson's post-match assessment.
 
 **Built with:**
 - Go + [Bubbletea](https://github.com/charmbracelet/bubbletea) for the terminal UI
