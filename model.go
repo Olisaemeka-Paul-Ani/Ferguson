@@ -58,7 +58,7 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
-	return tea.Batch(FetchPlayersCmd(), FetchFixturesCmd(), FetchVerdictCmd(), loadingTickCmd())
+	return tea.Batch(titleCmd(), FetchPlayersCmd(), FetchFixturesCmd(), FetchVerdictCmd(), loadingTickCmd())
 
 }
 
@@ -258,6 +258,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case loadingTickMsg:
 		m.LoadingIndex = (m.LoadingIndex + 1) % len(ui.LoadingQuotes)
 		return m, loadingTickCmd()
+
+	case titleMsg:
+
+		if m.RevealedTitle == len(ui.Title)-1 {
+			m.RevealedTitle = len(ui.Title)
+			return m, nil
+
+		} else {
+			m.RevealedTitle = m.RevealedTitle + 1
+		}
+
+		return m, titleCmd()
 
 	}
 
