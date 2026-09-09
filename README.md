@@ -16,11 +16,13 @@ verdict.
 - Go + [Bubbletea](https://github.com/charmbracelet/bubbletea) for the terminal UI
 - [Lip Gloss](https://github.com/charmbracelet/lipgloss) for styling
 - The public FPL API for live squad/fixture/points data
-- Google Gemini (with Groq as fallback) to generate the AI verdict
+- Groq (with Google Gemini as fallback) to generate the AI verdict
 
 ```
 ferguson --team <your_id>
 ```
+
+No config file in V1 — your team ID is passed via the `--team` flag each run.
 
 Squad pane · Fixtures pane · AI Verdict pane — tab between them, `r` to
 refresh, `?` for help, `q` to quit.
