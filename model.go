@@ -272,7 +272,7 @@ func (m Model) View() string {
 		if m.SquadErr != nil {
 			return paneStyle.Render("Error: " + m.SquadErr.Error())
 		}
-		return paneStyle.Render("Loading squad...")
+		return loadingStyle.Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotSquad {
 		if m.ActivePane == 0 {
 			squadPane = activePaneStyle.Render(m.simpleTable.View())
@@ -285,7 +285,7 @@ func (m Model) View() string {
 		if m.FixtureErr != nil {
 			return paneStyle.Render("Error: " + m.FixtureErr.Error())
 		}
-		return paneStyle.Render("Loading fixtures...")
+		return loadingStyle.Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotFixtures {
 		HighlightedRow := m.simpleTable.HighlightedRow()
 		HighlightedPlayer, ok := HighlightedRow.Data[PlayerName].(string)
@@ -356,7 +356,7 @@ func (m Model) View() string {
 		if m.VerdictErr != nil {
 			return paneStyle.Render("Error: " + m.VerdictErr.Error())
 		}
-		return paneStyle.Render("Loading Verdict...")
+		return loadingStyle.Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotVerdict {
 		if m.ActivePane == 2 {
 			VerdictView = VerdictActivePaneStyle.Render(m.VerdictText[:m.RevealedChars])
