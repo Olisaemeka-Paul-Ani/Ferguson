@@ -74,6 +74,11 @@ var (
 			Bold(true).
 			Foreground(colorAccent)
 
+	HeadStyle = titleStyle.
+			Copy().
+			Align(lipgloss.Center).
+			Width(80)
+
 	footerStyle = baseStyle.
 			Foreground(colorFooter)
 
