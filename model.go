@@ -364,10 +364,10 @@ func (m Model) View() string {
 		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
 		FormatFixtures = ui.FormatFixtures(GroupFirstFive, fdrColorMap)
 		if m.ActivePane == 1 {
-			fixturesPane = activePaneStyle.Render(FormatFixtures)
+			fixturesPane = ActiveFixtureViewStyle.Render(FormatFixtures)
 			HighLightedPane = ActiveHighlightStyle.Render(output)
 		} else {
-			fixturesPane = paneStyle.Render(FormatFixtures)
+			fixturesPane = FixtureViewStyle.Render(FormatFixtures)
 			HighLightedPane = HighlightStyle.Render(output)
 		}
 
