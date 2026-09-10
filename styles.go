@@ -105,6 +105,14 @@ var (
 				Width(40).
 				MaxHeight(15)
 
+	FixtureViewStyle = paneStyle.
+				Copy().
+				MaxHeight(15)
+
+	ActiveFixtureViewStyle = activePaneStyle.
+				Copy().
+				MaxHeight(15)
+
 	fdrVeryHardStyle = baseStyle.Foreground(colorVeryHard)
 	fdrHardStyle     = baseStyle.Foreground(colorHard)
 	fdrNeutralStyle  = baseStyle.Foreground(colorNeutral)
