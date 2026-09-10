@@ -55,6 +55,7 @@ type Model struct {
 	FormErr        error
 	simpleTable    table.Model
 	SparklineGraph map[int][]fpl.Points
+	showHelpView   bool
 }
 
 func (m Model) Init() tea.Cmd {
@@ -193,6 +194,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "left":
 			m.ActivePane = (m.ActivePane - 1 + 3) % 3
+
+		case "?":
+			if m.showHelpView == false {
+				m.showHelpView = true
+
+			} else {
+				m.showHelpView = false
+			}
+			return m, nil
 
 		}
 
