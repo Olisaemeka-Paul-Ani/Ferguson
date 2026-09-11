@@ -288,6 +288,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
+	if m.showHelpView == true {
+		return lipgloss.Place(150, 24, lipgloss.Center, lipgloss.Center, lipgloss.JoinVertical(
+			lipgloss.Center, paneStyle.Render(ui.Directions),
+			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[0]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[0]])),
+			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[1]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[1]])),
+			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[2]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[2]])),
+			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[3]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[3]])),
+			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[4]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[4]])),
+		))
+	}
 
 	gotSquad := len(m.Squad) > 0
 	gotFixtures := len(m.Fixtures) > 0
