@@ -34,6 +34,7 @@ func NewModel(id int) Model {
 			table.NewColumn(GWPoints, "GW Points", 10),
 		}).WithRows([]table.Row{}).WithPageSize(15).Focused(true),
 		SparklineGraph: make(map[int][]fpl.Points),
+		PlayerInfoMap:  make(map[int]fpl.Player),
 		TeamID:         id,
 	}
 }
@@ -57,6 +58,7 @@ type Model struct {
 	FormErr        error
 	simpleTable    table.Model
 	SparklineGraph map[int][]fpl.Points
+	PlayerInfoMap  map[int]fpl.Player
 	showHelpView   bool
 }
 
