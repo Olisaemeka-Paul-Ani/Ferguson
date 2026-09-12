@@ -11,6 +11,29 @@ type Container struct {
 	Group []Player `json:"elements"`
 }
 
+func FetchSquadPlayers(id int) ([]InnerPick, error) {
+	resp, err := http.Get("https://fantasy.premierleague.com/api/entry/" + strconv.Itoa(id) + "/event/1/picks/")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var AllPicks OuterPick
+	err = json.Unmarshal(body, &AllPicks)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return AllPicks.Picks, nil
+}
+
 func FetchAllPlayers() ([]Player, error) {
 	resp, err := http.Get("https://fantasy.premierleague.com/api/bootstrap-static/")
 	if err != nil {
