@@ -30,3 +30,11 @@ type Points struct {
 type FormStruct struct {
 	Form []Points `json:"history"`
 }
+
+type InnerPick struct {
+	Element int `json:"element"`
+}
+
+type OuterPick struct {
+	Picks []InnerPick `json:"picks"`
+}
