@@ -34,6 +34,17 @@ func FetchSquadPlayers(id int) ([]InnerPick, error) {
 	return AllPicks.Picks, nil
 }
 
+func FetchSquadPlayersintoStruct(picks []InnerPick) map[int]bool {
+	i := 0
+	var pickMap = make(map[int]bool)
+	for i < len(picks) {
+		pickMap[picks[i].Element] = true
+		i = i + 1
+	}
+	return pickMap
+
+}
+
 func FetchAllPlayers() ([]Player, error) {
 	resp, err := http.Get("https://fantasy.premierleague.com/api/bootstrap-static/")
 	if err != nil {
