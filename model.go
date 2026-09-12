@@ -23,7 +23,7 @@ const (
 	Id           = "Identification"
 )
 
-func NewModel() Model {
+func NewModel(id int) Model {
 	return Model{
 		simpleTable: table.New([]table.Column{
 			table.NewColumn(PlayerName, "Name", 16),
@@ -34,6 +34,7 @@ func NewModel() Model {
 			table.NewColumn(GWPoints, "GW Points", 10),
 		}).WithRows([]table.Row{}).WithPageSize(15).Focused(true),
 		SparklineGraph: make(map[int][]fpl.Points),
+		TeamID:         id,
 	}
 }
 
@@ -41,6 +42,7 @@ type Model struct {
 	Width          int
 	Height         int
 	ActivePane     int
+	TeamID         int
 	WillQuit       bool
 	ShowDetail     bool
 	VerdictText    string
