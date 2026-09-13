@@ -231,23 +231,32 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.Err != nil {
 			m.SquadErr = msg.Err
 		} else {
+
 			i := 0
+			var filteredSquad []fpl.Player
 			var rows []table.Row
 			for i < len(msg.Players) {
-				rowData := table.RowData{
-					PlayerName:   msg.Players[i].WebName,
-					PositionName: msg.Players[i].Position,
-					ClubName:     msg.Players[i].Club,
-					Price:        msg.Players[i].Cost,
-					TotalPoints:  msg.Players[i].TotalPoints,
-					GWPoints:     msg.Players[i].GameweekPoints,
-					Id:           msg.Players[i].Identification,
+				if msg.SquadPlayers[msg.Players[i].Identification] == true {
+					m.PlayerInfoMap[msg.Players[i].Identification] = msg.Players[i]
+					rowData := table.RowData{
+						PlayerName:   msg.Players[i].WebName,
+						PositionName: msg.Players[i].Position,
+						ClubName:     msg.Players[i].Club,
+						Price:        msg.Players[i].Cost,
+						TotalPoints:  msg.Players[i].TotalPoints,
+						GWPoints:     msg.Players[i].GameweekPoints,
+						Id:           msg.Players[i].Identification,
+					}
+					filteredSquad = append(filteredSquad, msg.Players[i])
+					rows = append(rows, table.NewRow(rowData))
+
 				}
-				rows = append(rows, table.NewRow(rowData))
+
 				i = i + 1
 			}
+
 			m.simpleTable = m.simpleTable.WithRows(rows)
-			m.Squad = msg.Players
+			m.Squad = filteredSquad
 		}
 
 	case FixtureSheet:
