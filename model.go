@@ -63,13 +63,14 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
-	return tea.Batch(titleCmd(), FetchPlayersCmd(), FetchFixturesCmd(), FetchVerdictCmd(), loadingTickCmd())
+	return tea.Batch(titleCmd(), FetchPlayersCmd(m.TeamID), FetchFixturesCmd(), FetchVerdictCmd(), loadingTickCmd())
 
 }
 
 type TeamSheet struct {
-	Players []fpl.Player
-	Err     error
+	Players      []fpl.Player
+	SquadPlayers map[int]bool
+	Err          error
 }
 
 type FixtureSheet struct {
@@ -110,13 +111,21 @@ func FetchFixturesCmd() tea.Cmd {
 	}
 }
 
-func FetchPlayersCmd() tea.Cmd {
+func FetchPlayersCmd(teamID int) tea.Cmd {
 	return func() tea.Msg {
 		SheetData, err := fpl.FetchAllPlayers()
+
 		if err != nil {
 			return TeamSheet{Err: err}
 		}
-		result := TeamSheet{Players: SheetData}
+		SquadPickSlice, err := fpl.FetchSquadPlayers(teamID)
+		if err != nil {
+			return TeamSheet{Err: err}
+		}
+		SquadPickMap := fpl.FetchSquadPlayersintoStruct(SquadPickSlice)
+
+		result := TeamSheet{Players: SheetData, SquadPlayers: SquadPickMap}
+
 		return result
 	}
 }
