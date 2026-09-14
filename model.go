@@ -315,7 +315,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) View() string {
 	if m.showHelpView == true {
-		return lipgloss.Place(150, 24, lipgloss.Center, lipgloss.Center, lipgloss.JoinVertical(
+		return lipgloss.Place(m.Width, m.Height, lipgloss.Center, lipgloss.Center, lipgloss.JoinVertical(
 			lipgloss.Center, paneStyle.Render(ui.Directions),
 			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[0]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[0]])),
 			lipgloss.JoinHorizontal(lipgloss.Center, titleStyle.Render(ui.DirectionsCommandsKeys[1]), baseStyle.Render(ui.DirectionsCommands[ui.DirectionsCommandsKeys[1]])),
@@ -339,7 +339,7 @@ func (m Model) View() string {
 		if m.SquadErr != nil {
 			return paneStyle.Render("Error: " + m.SquadErr.Error())
 		}
-		return loadingStyle.Render(ui.LoadingQuotes[m.LoadingIndex])
+		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotSquad {
 		if m.ActivePane == 0 {
 			squadPane = activePaneStyle.Render(m.simpleTable.View())
@@ -352,7 +352,7 @@ func (m Model) View() string {
 		if m.FixtureErr != nil {
 			return paneStyle.Render("Error: " + m.FixtureErr.Error())
 		}
-		return loadingStyle.Render(ui.LoadingQuotes[m.LoadingIndex])
+		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotFixtures {
 		HighlightedRow := m.simpleTable.HighlightedRow()
 		HighlightedPlayer, ok := HighlightedRow.Data[PlayerName].(string)
@@ -423,7 +423,7 @@ func (m Model) View() string {
 		if m.VerdictErr != nil {
 			return paneStyle.Render("Error: " + m.VerdictErr.Error())
 		}
-		return loadingStyle.Render(ui.LoadingQuotes[m.LoadingIndex])
+		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotVerdict {
 		if m.ActivePane == 2 {
 			VerdictView = VerdictActivePaneStyle.Render(m.VerdictText[:m.RevealedChars])
@@ -434,10 +434,10 @@ func (m Model) View() string {
 
 	if gotFixtures && gotSquad && gotVerdict {
 		if m.ShowDetail == true {
-			combined := lipgloss.JoinVertical(lipgloss.Center, HeadStyle.Render(ui.Title[:m.RevealedTitle]), lipgloss.JoinHorizontal(lipgloss.Top, squadPane, HighLightedPane, VerdictView))
+			combined := lipgloss.JoinVertical(lipgloss.Center, HeadStyle.Width(m.Width).Render(ui.Title[:m.RevealedTitle]), lipgloss.JoinHorizontal(lipgloss.Top, squadPane, HighLightedPane, VerdictView))
 			return combined
 		} else {
-			combined := lipgloss.JoinVertical(lipgloss.Center, HeadStyle.Render(ui.Title[:m.RevealedTitle]), lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView))
+			combined := lipgloss.JoinVertical(lipgloss.Center, HeadStyle.Width(m.Width).Render(ui.Title[:m.RevealedTitle]), lipgloss.JoinHorizontal(lipgloss.Top, squadPane, fixturesPane, VerdictView))
 			return combined
 		}
 
