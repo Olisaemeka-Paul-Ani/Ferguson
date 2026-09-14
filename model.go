@@ -219,6 +219,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		}
 
+	case tea.WindowSizeMsg:
+		m.Width = msg.Width
+		m.Height = msg.Height
+
 	case FormSheet:
 		if msg.Err != nil {
 			m.FormErr = msg.Err
