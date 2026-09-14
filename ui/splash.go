@@ -1,5 +1,9 @@
 package ui
 
+import (
+	"github.com/charmbracelet/lipgloss"
+)
+
 var LoadingQuotes = []string{
 	"Cleaning the bagpipes...",
 	"Scrutinizing opponent habits...",
@@ -26,3 +30,8 @@ var Title = "\n" + `
   ██║     ███████╗██║  ██║╚██████╔╝╚██████╔╝███████║╚██████╔╝██║ ╚████║
   ╚═╝     ╚══════╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
 ` + "\n"
+
+func GetHeaderHeight() int {
+	HeaderHeight := lipgloss.Height(Title)
+	return HeaderHeight
+}
