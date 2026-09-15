@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -61,6 +62,11 @@ func SendPrompt(byt []byte) ([]byte, error) {
 	resp, err := http.Post("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key="+os.Getenv("FERGUSON_AI_KEY"), "application/json", bytes.NewBuffer(byt))
 
 	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTP REQUEST CAME BACK WITH ISSUE : %d: ", resp.StatusCode)
 		return nil, err
 	}
 
@@ -153,6 +159,12 @@ func SendGroqRequest(byt []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTP REQUEST CAME BACK WITH ISSUE : %d: ", resp.StatusCode)
+		return nil, err
+	}
+
 	body, err := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {

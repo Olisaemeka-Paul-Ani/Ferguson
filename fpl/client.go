@@ -2,6 +2,7 @@ package fpl
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -14,6 +15,10 @@ type Container struct {
 func FetchSquadPlayers(id int) ([]InnerPick, error) {
 	resp, err := http.Get("https://fantasy.premierleague.com/api/entry/" + strconv.Itoa(id) + "/event/1/picks/")
 	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTP REQUEST CAME BACK WITH ISSUE : %d: ", resp.StatusCode)
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -50,6 +55,10 @@ func FetchAllPlayers() ([]Player, error) {
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTP REQUEST CAME BACK WITH ISSUE : %d: ", resp.StatusCode)
+		return nil, err
+	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
@@ -70,6 +79,10 @@ func FetchAllPlayers() ([]Player, error) {
 func FetchAllFixtures() ([]Fixture, error) {
 	resp, err := http.Get("https://fantasy.premierleague.com/api/fixtures/")
 	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTP REQUEST CAME BACK WITH ISSUE : %d: ", resp.StatusCode)
 		return nil, err
 	}
 
@@ -94,6 +107,11 @@ func FetchFormData(id int) ([]Points, error) {
 	enp = enp + strconv.Itoa(id) + "/"
 	resp, err := http.Get(enp)
 	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		err = fmt.Errorf("HTTP REQUEST CAME BACK WITH ISSUE : %d: ", resp.StatusCode)
 		return nil, err
 	}
 
