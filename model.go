@@ -2,6 +2,7 @@ package main
 
 import (
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ai"
@@ -35,7 +36,8 @@ func NewModel(id int) Model {
 		}).WithRows([]table.Row{}).WithPageSize(15).Focused(true),
 		SparklineGraph: make(map[int][]fpl.Points),
 		PlayerInfoMap:  make(map[int]fpl.Player),
-		TeamID:         id,
+
+		TeamID: id,
 	}
 }
 
@@ -222,6 +224,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.Width = msg.Width
 		m.Height = msg.Height
+		AvailableHeight := m.Height - ui.GetHeaderHeight() - FixtureViewStyle.GetVerticalFrameSize() - 2
+		m.simpleTable = m.simpleTable.WithPageSize(AvailableHeight)
 
 	case FormSheet:
 		if msg.Err != nil {
@@ -409,12 +413,23 @@ func (m Model) View() string {
 
 		GroupFirstFive = ui.GroupFirstFive(m.Fixtures)
 		FormatFixtures = ui.FormatFixtures(GroupFirstFive, fdrColorMap)
+		AvailableHeight := m.Height - ui.GetHeaderHeight() - FixtureViewStyle.GetVerticalFrameSize() - 2
 		if m.ActivePane == 1 {
-			fixturesPane = ActiveFixtureViewStyle.Render(FormatFixtures)
-			HighLightedPane = ActiveHighlightStyle.Render(output)
+			lines := strings.Split(FormatFixtures, "\n")
+			target := AvailableHeight - FixtureViewStyle.GetVerticalFrameSize()
+			if len(lines) > target {
+				FormatFixtures = strings.Join(lines[:target], "\n")
+			}
+			fixturesPane = ActiveFixtureViewStyle.MaxHeight(AvailableHeight).Height(AvailableHeight - FixtureViewStyle.GetVerticalFrameSize()).Render(FormatFixtures)
+			HighLightedPane = ActiveHighlightStyle.MaxHeight(AvailableHeight).Height(AvailableHeight - HighlightStyle.GetVerticalFrameSize()).Render(output)
 		} else {
-			fixturesPane = FixtureViewStyle.Render(FormatFixtures)
-			HighLightedPane = HighlightStyle.Render(output)
+			lines := strings.Split(FormatFixtures, "\n")
+			target := AvailableHeight - FixtureViewStyle.GetVerticalFrameSize()
+			if len(lines) > target {
+				FormatFixtures = strings.Join(lines[:target], "\n")
+			}
+			fixturesPane = FixtureViewStyle.MaxHeight(AvailableHeight).Height(AvailableHeight - FixtureViewStyle.GetVerticalFrameSize()).Render(FormatFixtures)
+			HighLightedPane = HighlightStyle.MaxHeight(AvailableHeight).Height(AvailableHeight - HighlightStyle.GetVerticalFrameSize()).Render(output)
 		}
 
 	}
@@ -425,10 +440,11 @@ func (m Model) View() string {
 		}
 		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotVerdict {
+		AvailableHeight := m.Height - ui.GetHeaderHeight() - FixtureViewStyle.GetVerticalFrameSize() - 2
 		if m.ActivePane == 2 {
-			VerdictView = VerdictActivePaneStyle.Render(m.VerdictText[:m.RevealedChars])
+			VerdictView = VerdictActivePaneStyle.MaxHeight(AvailableHeight).Height(AvailableHeight - FixtureViewStyle.GetVerticalFrameSize()).Render(m.VerdictText[:m.RevealedChars])
 		} else {
-			VerdictView = verdictStyle.Render(m.VerdictText[:m.RevealedChars])
+			VerdictView = verdictStyle.MaxHeight(AvailableHeight).Height(AvailableHeight - FixtureViewStyle.GetVerticalFrameSize()).Render(m.VerdictText[:m.RevealedChars])
 		}
 	}
 
