@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 // GEMINI API STRUCTS, REQUEST, RESPONSE WORK (BEGINNING)
@@ -59,7 +60,10 @@ func AggregatePrompt(str string) ([]byte, error) {
 }
 
 func SendPrompt(byt []byte) ([]byte, error) {
-	resp, err := http.Post("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key="+os.Getenv("FERGUSON_AI_KEY"), "application/json", bytes.NewBuffer(byt))
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	resp, err := client.Post("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key="+os.Getenv("FERGUSON_AI_KEY"), "application/json", bytes.NewBuffer(byt))
 
 	if err != nil {
 		return nil, err
@@ -154,8 +158,10 @@ func SendGroqRequest(byt []byte) ([]byte, error) {
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+os.Getenv("FERGUSON_GROQ_KEY"))
-
-	resp, err := http.DefaultClient.Do(req)
+	client := &http.Client{
+		Timeout: 60 * time.Second,
+	}
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}

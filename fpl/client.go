@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type Container struct {
@@ -13,7 +14,10 @@ type Container struct {
 }
 
 func FetchSquadPlayers(id int) ([]InnerPick, error) {
-	resp, err := http.Get("https://fantasy.premierleague.com/api/entry/" + strconv.Itoa(id) + "/event/1/picks/")
+	client := &http.Client{
+		Timeout: 20 * time.Second,
+	}
+	resp, err := client.Get("https://fantasy.premierleague.com/api/entry/" + strconv.Itoa(id) + "/event/1/picks/")
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +55,10 @@ func FetchSquadPlayersintoStruct(picks []InnerPick) map[int]bool {
 }
 
 func FetchAllPlayers() ([]Player, error) {
-	resp, err := http.Get("https://fantasy.premierleague.com/api/bootstrap-static/")
+	client := &http.Client{
+		Timeout: 20 * time.Second,
+	}
+	resp, err := client.Get("https://fantasy.premierleague.com/api/bootstrap-static/")
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +84,10 @@ func FetchAllPlayers() ([]Player, error) {
 }
 
 func FetchAllFixtures() ([]Fixture, error) {
-	resp, err := http.Get("https://fantasy.premierleague.com/api/fixtures/")
+	client := &http.Client{
+		Timeout: 20 * time.Second,
+	}
+	resp, err := client.Get("https://fantasy.premierleague.com/api/fixtures/")
 	if err != nil {
 		return nil, err
 	}
@@ -103,9 +113,12 @@ func FetchAllFixtures() ([]Fixture, error) {
 }
 
 func FetchFormData(id int) ([]Points, error) {
+	client := &http.Client{
+		Timeout: 20 * time.Second,
+	}
 	enp := "https://fantasy.premierleague.com/api/element-summary/"
 	enp = enp + strconv.Itoa(id) + "/"
-	resp, err := http.Get(enp)
+	resp, err := client.Get(enp)
 	if err != nil {
 		return nil, err
 	}
