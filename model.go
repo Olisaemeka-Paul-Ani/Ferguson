@@ -250,7 +250,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						PlayerName:   msg.Players[i].WebName,
 						PositionName: msg.Players[i].Position,
 						ClubName:     msg.Players[i].Club,
-						Price:        msg.Players[i].Cost,
+						Price:        strconv.FormatFloat(float64(msg.Players[i].Cost)/float64(10), 'f', 1, 64),
 						TotalPoints:  msg.Players[i].TotalPoints,
 						GWPoints:     msg.Players[i].GameweekPoints,
 						Id:           msg.Players[i].Identification,
