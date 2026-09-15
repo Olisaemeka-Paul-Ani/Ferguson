@@ -140,7 +140,7 @@ func AggregateGroqRequest(str string) ([]byte, error) {
 	var prompt = Body{"user", str}
 	var messagesSlice []Body
 	messagesSlice = append(messagesSlice, prompt)
-	var request = GroqRequest{"qwen/qwen3.6-27b", messagesSlice}
+	var request = GroqRequest{"llama-3.3-70b-versatile", messagesSlice}
 	jsonBytes, err := json.Marshal(request)
 	if err != nil {
 		return nil, err
