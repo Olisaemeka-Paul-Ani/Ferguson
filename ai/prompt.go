@@ -1,7 +1,7 @@
 package ai
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ui"
@@ -80,14 +80,14 @@ func ConvertBundledData() (string, error) {
 func FallBackFunction() (string, error) {
 	var Verdict string
 
-	var err error
-	Verdict, err = GetGrokReply()
+	var errOne error
+	Verdict, errOne = GetGrokReply()
 
-	if err != nil {
-
-		Verdict, err = GetGeminiReply()
-		if err != nil {
-			err = errors.New("both providers failed")
+	if errOne != nil {
+		var errTwo error
+		Verdict, errTwo = GetGeminiReply()
+		if errTwo != nil {
+			err := fmt.Errorf("groq: %w, gemini: %w", errOne, errTwo)
 			return "", err
 		}
 
