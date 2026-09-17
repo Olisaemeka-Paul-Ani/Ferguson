@@ -243,13 +243,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			i := 0
 			var filteredSquad []fpl.Player
 			var rows []table.Row
+			SquadPlayerMap := ui.GetPlayerDict()
+			AbrevSquadPlayerMap := ui.GetFixtureAbrevDict()
 			for i < len(msg.Players) {
 				if msg.SquadPlayers[msg.Players[i].Identification] == true {
 					m.PlayerInfoMap[msg.Players[i].Identification] = msg.Players[i]
 					rowData := table.RowData{
 						PlayerName:   msg.Players[i].WebName,
-						PositionName: msg.Players[i].Position,
-						ClubName:     msg.Players[i].Club,
+						PositionName: SquadPlayerMap[msg.Players[i].Position],
+						ClubName:     AbrevSquadPlayerMap[msg.Players[i].Club],
 						Price:        strconv.FormatFloat(float64(msg.Players[i].Cost)/float64(10), 'f', 1, 64),
 						TotalPoints:  msg.Players[i].TotalPoints,
 						GWPoints:     msg.Players[i].GameweekPoints,

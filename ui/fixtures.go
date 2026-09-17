@@ -34,6 +34,33 @@ func GetFixtureDict() map[int]string {
 	return FixtureDict
 }
 
+func GetFixtureAbrevDict() map[int]string {
+	FixtureDict := map[int]string{
+		1:  "ARS",
+		2:  "AVL",
+		3:  "BOU",
+		4:  "BRE",
+		5:  "BRI",
+		6:  "CHE",
+		7:  "COV",
+		8:  "CRY",
+		9:  "EVE",
+		10: "FUL",
+		11: "HUL",
+		12: "IPS",
+		13: "LEE",
+		14: "LIV",
+		15: "MCI",
+		16: "MUN",
+		17: "NEW",
+		18: "NFO",
+		19: "TOT",
+		20: "SUN",
+	}
+
+	return FixtureDict
+}
+
 // GETS ALL THE GAMES THAT HAVE NOT BEEN PLAYED YET
 func FindUpcomingMatches(games []fpl.Fixture) []fpl.Fixture {
 	var output []fpl.Fixture
