@@ -2,7 +2,6 @@ package ui
 
 import (
 	"slices"
-	"strconv"
 
 	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 )
@@ -127,17 +126,18 @@ func FormatFixtures(clubs map[int][]fpl.Fixture, blocks map[int]string) string {
 	}
 	slices.Sort(sortedSlice)
 	i := 0
+	HashMap := GetFixtureAbrevDict()
 	for i < len(sortedSlice) {
 		var placeHolder string
-		placeHolder += "Club " + strconv.Itoa(sortedSlice[i])
+		placeHolder += "Club " + HashMap[sortedSlice[i]]
 		placeHolder += "\n"
 
 		j := 0
 		for j < len(clubs[sortedSlice[i]]) {
 			if sortedSlice[i] == clubs[sortedSlice[i]][j].TeamHome {
-				placeHolder += " " + " vs " + strconv.Itoa(clubs[sortedSlice[i]][j].TeamAway) + " (H) " + "-" + "Difficulty " + blocks[clubs[sortedSlice[i]][j].TeamHomeDifficulty] + "\n"
+				placeHolder += " " + " vs " + HashMap[clubs[sortedSlice[i]][j].TeamAway] + " (H) " + "-" + "Difficulty " + blocks[clubs[sortedSlice[i]][j].TeamHomeDifficulty] + "\n"
 			} else {
-				placeHolder += " " + " vs " + strconv.Itoa(clubs[sortedSlice[i]][j].TeamHome) + " (A) " + "-" + "Difficulty " + blocks[clubs[sortedSlice[i]][j].TeamAwayDifficulty] + "\n"
+				placeHolder += " " + " vs " + HashMap[clubs[sortedSlice[i]][j].TeamHome] + " (A) " + "-" + "Difficulty " + blocks[clubs[sortedSlice[i]][j].TeamAwayDifficulty] + "\n"
 			}
 			j = j + 1
 		}
