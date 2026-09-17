@@ -341,9 +341,9 @@ func (m Model) View() string {
 
 	if !gotSquad {
 		if m.SquadErr != nil {
-			return paneStyle.Render("Error: " + m.SquadErr.Error())
+			return paneStyle.Align(lipgloss.Center).Width(m.Width - paneStyle.GetHorizontalBorderSize()).Render("Error: " + m.SquadErr.Error())
 		}
-		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
+		return loadingStyle.Width(m.Width - loadingStyle.GetHorizontalBorderSize()).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotSquad {
 		if m.ActivePane == 0 {
 			squadPane = activePaneStyle.Render(m.simpleTable.View())
@@ -354,9 +354,9 @@ func (m Model) View() string {
 
 	if !gotFixtures {
 		if m.FixtureErr != nil {
-			return paneStyle.Render("Error: " + m.FixtureErr.Error())
+			return paneStyle.Align(lipgloss.Center).Width(m.Width - paneStyle.GetHorizontalBorderSize()).Render("Error: " + m.FixtureErr.Error())
 		}
-		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
+		return loadingStyle.Width(m.Width - loadingStyle.GetHorizontalBorderSize()).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotFixtures {
 		HighlightedRow := m.simpleTable.HighlightedRow()
 		HighlightedPlayer, ok := HighlightedRow.Data[PlayerName].(string)
@@ -436,9 +436,9 @@ func (m Model) View() string {
 
 	if !gotVerdict {
 		if m.VerdictErr != nil {
-			return paneStyle.Render("Error: " + m.VerdictErr.Error())
+			return paneStyle.Align(lipgloss.Center).Width(m.Width - paneStyle.GetHorizontalBorderSize()).Render("Error: " + m.VerdictErr.Error())
 		}
-		return loadingStyle.Width(m.Width).Render(ui.LoadingQuotes[m.LoadingIndex])
+		return loadingStyle.Width(m.Width - loadingStyle.GetHorizontalBorderSize()).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotVerdict {
 		AvailableHeight := m.Height - ui.GetHeaderHeight() - FixtureViewStyle.GetVerticalFrameSize() - 2
 		if m.ActivePane == 2 {
