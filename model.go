@@ -65,7 +65,7 @@ type Model struct {
 }
 
 func (m Model) Init() tea.Cmd {
-	return tea.Batch(titleCmd(), FetchPlayersCmd(m.TeamID), FetchFixturesCmd(), FetchVerdictCmd(), loadingTickCmd())
+	return tea.Batch(titleCmd(), FetchPlayersCmd(m.TeamID), FetchFixturesCmd(), loadingTickCmd())
 
 }
 
@@ -132,9 +132,9 @@ func FetchPlayersCmd(teamID int) tea.Cmd {
 	}
 }
 
-func FetchVerdictCmd() tea.Cmd {
+func FetchVerdictCmd(squad []fpl.Player, fx []fpl.Fixture) tea.Cmd {
 	return func() tea.Msg {
-		SheetData, err := ai.FallBackFunction()
+		SheetData, err := ai.FallBackFunction(squad, fx)
 		if err != nil {
 			return VerdictSheet{Err: err}
 		}
@@ -267,6 +267,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			m.simpleTable = m.simpleTable.WithRows(rows)
 			m.Squad = filteredSquad
+			if len(m.Fixtures) > 0 {
+				return m, FetchVerdictCmd(m.Squad, m.Fixtures)
+			}
 		}
 
 	case FixtureSheet:
@@ -274,6 +277,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.FixtureErr = msg.Err
 		} else {
 			m.Fixtures = msg.Fixtures
+			if len(m.Squad) > 0 {
+				return m, FetchVerdictCmd(m.Squad, m.Fixtures)
+			}
+
 		}
 
 	case VerdictSheet:

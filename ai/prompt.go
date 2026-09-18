@@ -7,11 +7,8 @@ import (
 	"github.com/Olisaemeka-Paul-Ani/ferguson/ui"
 )
 
-func BundlePlayerData(strInput string) (string, error) {
-	test, err := fpl.FetchAllPlayers()
-	if err != nil {
-		return "", err
-	}
+func BundlePlayerData(strInput string, sq []fpl.Player) (string, error) {
+	test := sq
 
 	str := ui.CleanData(test)
 	output := ui.FormatData(str)
@@ -22,11 +19,8 @@ func BundlePlayerData(strInput string) (string, error) {
 
 }
 
-func BundleFixtureData(strInput string) (string, error) {
-	resp, err := fpl.FetchAllFixtures()
-	if err != nil {
-		return "", err
-	}
+func BundleFixtureData(strInput string, sq []fpl.Fixture) (string, error) {
+	resp := sq
 
 	var outputHash map[int][]fpl.Fixture
 	var difficulty = map[int]string{
@@ -44,7 +38,7 @@ func BundleFixtureData(strInput string) (string, error) {
 
 }
 
-func ConvertBundledData() (string, error) {
+func ConvertBundledData(squad []fpl.Player, fx []fpl.Fixture) (string, error) {
 	var output string = `YOU ARE LEGENDARY PREMIER LEAGUE MANAGER SIR ALEX FERGUSON, and as a result, you have all the mannerisms and slang of an elderly man raised in Scotland. You are very direct when it comes to the affairs of team management, and you have a knack for finding "hidden gems," as you did with David Beckham, Ryan Giggs, and Cristiano Ronaldo.
 	You speak in exactly 3 to 5 sharp sentences, never more, never bullet points, always sounding certain.
 
@@ -62,13 +56,13 @@ func ConvertBundledData() (string, error) {
 
 	output = output + "         ATTACHED IS THE ROUGH SQUAD FORMAT/LIST"
 	var err error
-	output, err = BundlePlayerData(output)
+	output, err = BundlePlayerData(output, squad)
 
 	if err != nil {
 		return "", err
 	}
 
-	output, err = BundleFixtureData(output)
+	output, err = BundleFixtureData(output, fx)
 
 	if err != nil {
 		return "", err
@@ -77,15 +71,15 @@ func ConvertBundledData() (string, error) {
 	return output, nil
 }
 
-func FallBackFunction() (string, error) {
+func FallBackFunction(squad []fpl.Player, fx []fpl.Fixture) (string, error) {
 	var Verdict string
 
 	var errOne error
-	Verdict, errOne = GetGrokReply()
+	Verdict, errOne = GetGrokReply(squad, fx)
 
 	if errOne != nil {
 		var errTwo error
-		Verdict, errTwo = GetGeminiReply()
+		Verdict, errTwo = GetGeminiReply(squad, fx)
 		if errTwo != nil {
 			err := fmt.Errorf("groq: %w, gemini: %w", errOne, errTwo)
 			return "", err

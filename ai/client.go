@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/Olisaemeka-Paul-Ani/ferguson/fpl"
 )
 
 // GEMINI API STRUCTS, REQUEST, RESPONSE WORK (BEGINNING)
@@ -204,9 +206,9 @@ func ExtractUnmarshalledGrokResponse(res GroqResponseContent) (string, error) {
 // GROQ API STRUCTS, REQUEST, RESPONSE WORK (ENDING)
 
 // LOGIC FOR WIRING PROMPT FROM PROMPT.GO INTO BOTH LLMS  (BEGINNING)
-func GetGrokReply() (string, error) {
+func GetGrokReply(squad []fpl.Player, fx []fpl.Fixture) (string, error) {
 
-	PromptStr, err := ConvertBundledData()
+	PromptStr, err := ConvertBundledData(squad, fx)
 	if err != nil {
 		return "", err
 	}
@@ -240,8 +242,8 @@ func GetGrokReply() (string, error) {
 	return GroqResString, nil
 }
 
-func GetGeminiReply() (string, error) {
-	PromptStr, err := ConvertBundledData()
+func GetGeminiReply(squad []fpl.Player, fx []fpl.Fixture) (string, error) {
+	PromptStr, err := ConvertBundledData(squad, fx)
 	if err != nil {
 		return "", err
 	}
