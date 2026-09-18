@@ -16,6 +16,8 @@ const (
 	colorVeryEasy = lipgloss.Color("#3399FF")
 )
 
+var Help = " ↑↓ Navigate" + "\n" + "Enter  Details" + "\n" + "?  Help"
+
 var fdrColorMap = map[int]string{
 	1: fdrVeryEasyStyle.Render("■■■■■"),
 	2: fdrEasyStyle.Render("■■■■■"),
@@ -112,6 +114,9 @@ var (
 	ActiveFixtureViewStyle = activePaneStyle.
 				Copy().
 				MaxHeight(15)
+
+	HelpStyle = lipgloss.NewStyle().
+			Foreground(colorFooter)
 
 	fdrVeryHardStyle = baseStyle.Foreground(colorVeryHard)
 	fdrHardStyle     = baseStyle.Foreground(colorHard)

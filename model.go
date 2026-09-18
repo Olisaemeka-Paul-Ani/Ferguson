@@ -355,9 +355,11 @@ func (m Model) View() string {
 		return loadingStyle.Width(m.Width - loadingStyle.GetHorizontalBorderSize()).Render(ui.LoadingQuotes[m.LoadingIndex])
 	} else if gotSquad {
 		if m.ActivePane == 0 {
-			squadPane = activePaneStyle.Render(m.simpleTable.View())
+			squadPane = lipgloss.JoinVertical(lipgloss.Center, activePaneStyle.Render(m.simpleTable.View()), HelpStyle.Height((m.Height-ui.GetHeaderHeight()-
+				FixtureViewStyle.GetVerticalFrameSize()-2)-lipgloss.Height(activePaneStyle.Render(m.simpleTable.View()))).Width(lipgloss.Width(m.simpleTable.View())).Render(Help))
 		} else {
-			squadPane = paneStyle.Render(m.simpleTable.View())
+			squadPane = lipgloss.JoinVertical(lipgloss.Center, paneStyle.Render(m.simpleTable.View()), HelpStyle.Height((m.Height-ui.GetHeaderHeight()-
+				FixtureViewStyle.GetVerticalFrameSize()-2)-lipgloss.Height(paneStyle.Render(m.simpleTable.View()))).Width(lipgloss.Width(m.simpleTable.View())).Render(Help))
 		}
 	}
 
