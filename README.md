@@ -28,11 +28,7 @@ The AI verdict itself tries Groq first (fast, free-tier) and falls back to Googl
 
 ## Performance
 
-Startup dispatches the squad and fixtures fetches as concurrent goroutines rather than one after another. Measured with a standalone benchmark ([`bench/main.go`](bench/main.go)), averaged over 5 runs against the real FPL API:
-
-- **Sequential (one after another):** ~834.9ms
-- **Concurrent (as implemented):** ~317.0ms
-- **~62% reduction** in cold-start latency, bounded by the slowest single call instead of the sum of all of them
+Startup fetches the squad and fixtures concurrently via tea.Batch, so total load time is bounded by the slowest request instead of the sum of all of them. A rough benchmark ([bench/main.go](bench/main.go)) found the requests take ~835ms combined but finish in ~317ms when run in parallel.
 
 ## File structure
 
@@ -55,6 +51,8 @@ ferguson/
 
 ## Installation
 
+Requires Go 1.26+
+
 ```
 go install github.com/Olisaemeka-Paul-Ani/ferguson@latest
 ```
@@ -75,6 +73,8 @@ FERGUSON_AI_KEY=<your Google Gemini API key>
 ```
 
 Your team ID is passed via the `--team` flag each run — there's no config file in V1.
+
+Your team ID is the number in the URL of your FPL Points page.
 
 ## Usage
 

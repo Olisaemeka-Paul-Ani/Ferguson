@@ -1,10 +1,10 @@
 # Ferguson — CLAUDE.md
 
-AI-powered Fantasy Premier League (FPL) terminal dashboard in Go. Bloomberg Terminal aesthetic: multi-pane, dark, color-coded, keyboard-only. V1 ships August 25, 2026.
+AI-powered Fantasy Premier League (FPL) terminal dashboard in Go. Bloomberg Terminal aesthetic: multi-pane, dark, color-coded, keyboard-only.
 
 ## Non-negotiables
 
-- Language: Go 1.22+. Stack: Bubbletea (TUI), Lip Gloss (styling), Bubbles (components), `github.com/evertras/bubble-table` (squad table + selection, chosen over `bubbles/table` for its richer built-in styling), stdlib `net/http` + `encoding/json` only. No other dependencies without asking.
+- Language: Go 1.26+. Stack: Bubbletea (TUI), Lip Gloss (styling), Bubbles (components), `github.com/evertras/bubble-table` (squad table + selection, chosen over `bubbles/table` for its richer built-in styling), stdlib `net/http` + `encoding/json` only. No other dependencies without asking.
 - Real FPL data only. **No mocking in production paths.**
 - AI provider: Groq (`llama-3.3-70b-versatile`) primary, Google Gemini (`gemini-3.6-flash`) fallback. API keys from env vars `FERGUSON_GROQ_KEY` and `FERGUSON_AI_KEY` respectively. Never hardcode keys. (Switched from `qwen/qwen3.6-27b` 2026-09-15 — that model moved to Groq's Preview tier and stopped being free, causing real 404s; `llama-3.3-70b-versatile` is a stable, free, production-tier model.)
 - `team_id` passed as CLI flag: `ferguson --team 1234567`. No config file in V1.
